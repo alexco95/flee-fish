@@ -26,9 +26,9 @@
 	<Predator />
 {/each}
 
-<T.PerspectiveCamera makeDefault position={[-10, 10, 10]} fov={15}>
+<!-- <T.PerspectiveCamera makeDefault position={[-10, 10, 10]} fov={15}>
 	<OrbitControls enableDamping target={[0, 0, 0]} />
-</T.PerspectiveCamera>
+</T.PerspectiveCamera> -->
 
 <T.DirectionalLight intensity={0.8} position={[5, 10, 0]} />
 <T.AmbientLight intensity={0.2} />
