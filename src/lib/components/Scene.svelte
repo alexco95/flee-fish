@@ -1,22 +1,18 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
-	import { Vector3 } from 'three';
 	import PlayerFish from './PlayerFish.svelte';
 	import Predator from './Predator.svelte';
 	import { Grid, OrbitControls } from '@threlte/extras';
 	import { onMount } from 'svelte';
 
-	let predators: Vector3[] = [];
+	let predators: any[] = [];
 
-	function addPredator(): void {
-		const x = Math.random() * 10 - 5;
-		const y = Math.random() * 10 - 5;
-		const z = 10;
-		predators = [...predators, new Vector3(x, y, z)];
+	function addPredator() {
+		predators = [...predators, {}];
 	}
 
 	onMount(() => {
-		const interval = setInterval(addPredator, 5000); // Generar depredador cada 2 segundos
+		const interval = setInterval(addPredator, 2000);
 		return () => clearInterval(interval);
 	});
 </script>
@@ -27,7 +23,7 @@
 <PlayerFish />
 
 {#each predators as predator}
-	<Predator position={[predator.x, predator.y, predator.z]} />
+	<Predator />
 {/each}
 
 <T.PerspectiveCamera makeDefault position={[-10, 10, 10]} fov={15}>
