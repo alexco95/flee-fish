@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { playerPosition } from '$lib/stores/store';
 	import { T, useTask } from '@threlte/core';
 	import { Float } from '@threlte/extras';
 	import { onMount } from 'svelte';
-	import { Mesh } from 'three';
+	import { get } from 'svelte/store';
+	import type { Mesh } from 'three';
 
 	let position = [0, 0, 0];
 	let mesh: Mesh;
@@ -13,7 +15,10 @@
 
 	useTask((delta) => {
 		if (!mesh) return;
-		mesh.rotation.x += delta * 0.01;
+		const targetPosition = get(playerPosition);
+		const currentPosition = mesh.position;
+		currentPosition.lerp(targetPosition, delta * 0.1);
+		mesh.position.copy(currentPosition);
 	});
 
 	function generateRandomPosition(): void {
