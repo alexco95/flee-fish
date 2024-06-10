@@ -2,6 +2,7 @@
 	import { playerPosition } from '$lib/stores/store';
 	import { T, useTask } from '@threlte/core';
 	import { Float } from '@threlte/extras';
+	import { AutoColliders, RigidBody } from '@threlte/rapier';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { get } from 'svelte/store';
 	import { Mesh, Vector3 } from 'three';
@@ -9,6 +10,8 @@
 	const dispatcher = createEventDispatcher();
 
 	let mesh: Mesh;
+	let rigidBody: RigidBody;
+
 	let position = [0, 0, 0];
 	let distanceThreshold = 20;
 	let direction = new Vector3();
@@ -50,6 +53,8 @@
 		// Copiar la nueva posición al mesh
 		mesh.position.copy(currentPosition);
 
+		rigidBody.setTranslation(currentPosition, true);
+
 		// Verificar si el depredador está fuera del campo de visión
 		if (currentPosition.distanceTo(targetPosition) > distanceThreshold) {
 			dispatcher('remove');
@@ -64,9 +69,15 @@
 	}
 </script>
 
-<Float speed={10}>
-	<T.Mesh {position} bind:ref={mesh}>
-		<T.SphereGeometry args={[0.5, 32, 32]} />
-		<T.MeshStandardMaterial color="red" />
-	</T.Mesh>
-</Float>
+<T.Group bind:ref={mesh} {position}>
+	<RigidBody bind:rigidBody>
+		<AutoColliders>
+			<Float speed={10}>
+				<T.Mesh>
+					<T.SphereGeometry args={[0.5, 32, 32]} />
+					<T.MeshStandardMaterial color="red" />
+				</T.Mesh>
+			</Float>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>

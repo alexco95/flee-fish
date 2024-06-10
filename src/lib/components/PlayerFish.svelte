@@ -10,7 +10,6 @@
 	let player: Mesh;
 	let playerRef: Mesh;
 	let rigidBody: RigidBody;
-	let floatRef: Float;
 
 	const boundaries = {
 		xMin: -5,
@@ -49,7 +48,6 @@
 
 	useTask((delta) => {
 		if (player) {
-			console.log(floatRef);
 			const position = player.position;
 
 			if (keysPressed.ArrowUp || keysPressed.KeyW) {
@@ -89,7 +87,7 @@
 </T.PerspectiveCamera>
 
 <T.Group bind:ref={player}>
-	<RigidBody bind:rigidBody>
+	<RigidBody bind:rigidBody enabledRotations={[false, false, false]}>
 		<!-- <CollisionGroups groups={[0]}> -->
 		<AutoColliders>
 			<Float floatIntensity={[0.5, 0.5, 0.5]} speed={5}>
