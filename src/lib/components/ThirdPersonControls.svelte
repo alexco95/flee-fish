@@ -137,10 +137,10 @@
 	function onKeyDown(event: KeyboardEvent) {
 		switch (event.key) {
 			case 'a':
-				rotateDelta.x = -2 * rotateSpeed;
+				// rotateDelta.x = -2 * rotateSpeed;
 				break;
 			case 'd':
-				rotateDelta.x = 2 * rotateSpeed;
+				// rotateDelta.x = 2 * rotateSpeed;
 				break;
 			default:
 				break;

@@ -5,9 +5,12 @@
 	import type { Mesh } from 'three';
 	import ThirdPersonControls from './ThirdPersonControls.svelte';
 	import { onMount } from 'svelte';
+	import { AutoColliders, RigidBody } from '@threlte/rapier';
 
 	let player: Mesh;
 	let playerRef: Mesh;
+	let rigidBody: RigidBody;
+	let floatRef: Float;
 
 	const boundaries = {
 		xMin: -5,
@@ -46,6 +49,7 @@
 
 	useTask((delta) => {
 		if (player) {
+			console.log(floatRef);
 			const position = player.position;
 
 			if (keysPressed.ArrowUp || keysPressed.KeyW) {
@@ -62,6 +66,8 @@
 			}
 
 			playerPosition.set(player.position);
+
+			rigidBody.setTranslation(position, true);
 		}
 	});
 
@@ -82,9 +88,17 @@
 	<ThirdPersonControls bind:object={playerRef} />
 </T.PerspectiveCamera>
 
-<Float floatIntensity={[0.5, 0.5, 0.5]} speed={5}>
-	<T.Mesh bind:ref={player} position={[0, 0, 0]}>
-		<T.BoxGeometry />
-		<T.MeshStandardMaterial color="orange" />
-	</T.Mesh>
-</Float>
+<T.Group bind:ref={player}>
+	<RigidBody bind:rigidBody>
+		<!-- <CollisionGroups groups={[0]}> -->
+		<AutoColliders>
+			<Float floatIntensity={[0.5, 0.5, 0.5]} speed={5}>
+				<T.Mesh>
+					<T.BoxGeometry />
+					<T.MeshStandardMaterial color="orange" />
+				</T.Mesh>
+			</Float>
+		</AutoColliders>
+		<!-- </CollisionGroups> -->
+	</RigidBody>
+</T.Group>
