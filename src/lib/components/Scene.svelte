@@ -4,12 +4,15 @@
 	import Predator from './Predator.svelte';
 	import { Grid } from '@threlte/extras';
 	import { onMount, onDestroy } from 'svelte';
+	import { gamePaused } from '$lib/stores/store';
 
 	let predators: any[] = [];
 	let interval: number;
 
 	function addPredator() {
-		predators = [...predators, {}];
+		if (!$gamePaused) {
+			predators = [...predators, {}];
+		}
 	}
 
 	function startInterval() {
@@ -21,6 +24,8 @@
 	}
 
 	function handleVisibilityChange() {
+		gamePaused.set(document.hidden);
+
 		if (document.hidden) {
 			clearPredatorInterval();
 		} else {
