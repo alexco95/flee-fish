@@ -82,7 +82,7 @@
 	}
 </script>
 
-<T.PerspectiveCamera makeDefault fov={90}>
+<T.PerspectiveCamera makeDefault fov={90} far={50}>
 	<ThirdPersonControls bind:object={playerRef} />
 </T.PerspectiveCamera>
 
