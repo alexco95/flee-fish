@@ -20,11 +20,12 @@
 </Pane>
 <HealthBar />
 <Timer />
+
 <Canvas>
 	{#if perfMonitorEnabled}
 		<PerfMonitor />
 	{/if}
-	<World gravity={[0, 0, 0]}>
+	<World gravity={[0, -9.81 * 0.1, 0]}>
 		{#if debugEnabled}
 			<Debug />
 		{/if}

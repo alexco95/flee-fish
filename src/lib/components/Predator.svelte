@@ -78,7 +78,7 @@
 </script>
 
 <T.Group bind:ref={mesh} {position}>
-	<RigidBody bind:rigidBody>
+	<RigidBody bind:rigidBody gravityScale={0}>
 		<AutoColliders>
 			<Float speed={10}>
 				<T.Mesh>
