@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import PlayerFish from './PlayerFish.svelte';
-	import Predator from './Predator.svelte';
 	import { Grid } from '@threlte/extras';
 	import { onMount, onDestroy } from 'svelte';
 	import { gamePaused } from '$lib/stores/store';
+	import Shark from './predators/Shark.svelte';
 
 	let predators: any[] = [];
 	let interval: number;
@@ -54,8 +54,12 @@
 
 <PlayerFish />
 
+<!-- <T.PerspectiveCamera position={[0, -3, -3]} makeDefault fov={50}>
+	<OrbitControls enableDamping />
+</T.PerspectiveCamera> -->
+
 {#each predators as predator}
-	<Predator />
+	<Shark />
 {/each}
 
 <T.DirectionalLight intensity={0.8} position={[5, 10, 0]} />
