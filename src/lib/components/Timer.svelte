@@ -51,7 +51,7 @@
 		font-size: 32px;
 		font-optical-sizing: auto;
 		font-style: normal;
-		letter-spacing: 5px;
+		letter-spacing: 2px;
 		color: #ffffff;
 		font-weight: 700;
 		font-family: 'Fredoka', sans-serif;
