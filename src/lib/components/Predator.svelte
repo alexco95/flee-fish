@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reduceHealth } from '$lib/stores/healthStore';
 	import { playerPosition } from '$lib/stores/store';
 	import { T, useTask } from '@threlte/core';
 	import { Float } from '@threlte/extras';
@@ -17,6 +18,7 @@
 	let direction = new Vector3();
 	let initialDirectionSet = false;
 	let hasPassedPlayerFish = false;
+	let hasCollided = false;
 
 	onMount(() => {
 		generateRandomPosition();
@@ -58,6 +60,12 @@
 		// Verificar si el depredador está fuera del campo de visión
 		if (currentPosition.distanceTo(targetPosition) > distanceThreshold) {
 			dispatcher('remove');
+		}
+
+		if (distance < 1 && !hasCollided) {
+			hasCollided = true;
+			reduceHealth(5); // Reducir la salud en 10 (o el valor que desees)
+			dispatcher('remove'); // Remover el depredador después de la colisión
 		}
 	});
 

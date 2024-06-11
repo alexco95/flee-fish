@@ -35,7 +35,7 @@
 <style>
 	.health-bar-container {
 		position: absolute;
-		top: 10px;
+		top: 30px;
 		left: 10px;
 		width: 200px;
 		height: 20px;
@@ -77,7 +77,7 @@
 			background-color: #5dff48;
 		}
 		50% {
-			background-color: rgb(192, 255, 188);
+			background-color: rgb(200, 255, 90);
 		}
 	}
 </style>
