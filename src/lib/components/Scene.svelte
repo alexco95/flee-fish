@@ -5,13 +5,16 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { gamePaused } from '$lib/stores/store';
 	import Shark from './predators/Shark.svelte';
+	import Jellyfish from './predators/Jellyfish.svelte';
 
 	let predators: any[] = [];
 	let interval: number;
+	const predatorTypes = [Shark, Jellyfish];
 
 	function addPredator() {
 		if (!$gamePaused) {
-			predators = [...predators, {}];
+			const PredatorComponent = predatorTypes[Math.floor(Math.random() * predatorTypes.length)];
+			predators = [...predators, PredatorComponent];
 		}
 	}
 
@@ -59,7 +62,7 @@
 </T.PerspectiveCamera> -->
 
 {#each predators as predator}
-	<Shark />
+	<svelte:component this={predator} />
 {/each}
 
 <T.DirectionalLight intensity={0.8} position={[5, 10, 0]} />
