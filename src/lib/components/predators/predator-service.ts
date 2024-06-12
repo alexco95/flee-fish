@@ -18,23 +18,23 @@ export class PredatorService {
 	updateTrajectory(delta: number): void {
 		if (!this.mesh) return;
 
-		const targetPosition = get(playerPosition);
-		const currentPosition = this.mesh.position;
-
+		const currentPredatorPosition = this.mesh.position;
+		
 		// Update direction towards player
 		if (!this.hasCollided) {
-			this.direction.subVectors(targetPosition, currentPosition).normalize();
+			const targetPosition = get(playerPosition);
+			this.direction.subVectors(targetPosition, currentPredatorPosition).normalize();
 		}
 
 		// Move predator
-		currentPosition.addScaledVector(this.direction, delta * 5);
-		this.rigidBody.setTranslation(currentPosition, true);
+		currentPredatorPosition.addScaledVector(this.direction, delta * 5);
+		this.rigidBody.setTranslation(currentPredatorPosition, true);
 	}
 
 	handleCollision(event: CollisionEnterEvent): void {
 		this.hasCollided = true;
 
-		// Cambiar dirección aleatoriamente después de la colisión
+		// Change direction randomly after collision
 		this.direction.set(Math.random() - 0.5, Math.random() - 0.5, 0).normalize();
 
 		if (event.targetRigidBody?.handle === 0) { // consider adding playerFish name into rigid body userData
