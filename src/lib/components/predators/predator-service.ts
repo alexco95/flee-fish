@@ -9,7 +9,7 @@ export class PredatorService {
 	private direction = new Vector3();
 	private hasCollided = false;
 
-	constructor(private mesh: Group, private rigidBody: RAPIER.RigidBody) {
+	constructor(private mesh: Group, private rigidBody: RAPIER.RigidBody, private speed = 5, private damage = 5) {
 		const initialPosition = this.generateRandomPosition();
 		this.mesh.position.copy(initialPosition);
 		this.rigidBody.setTranslation(initialPosition, true);
@@ -27,7 +27,7 @@ export class PredatorService {
 		}
 
 		// Move predator
-		currentPredatorPosition.addScaledVector(this.direction, delta * 5);
+		currentPredatorPosition.addScaledVector(this.direction, delta * this.speed);
 		this.rigidBody.setTranslation(currentPredatorPosition, true);
 	}
 
@@ -38,7 +38,7 @@ export class PredatorService {
 		this.direction.set(Math.random() - 0.5, Math.random() - 0.5, 0).normalize();
 
 		if (event.targetRigidBody?.handle === 0) { // consider adding playerFish name into rigid body userData
-			reduceHealth(5);
+			reduceHealth(this.damage);
 		}
 	}
 

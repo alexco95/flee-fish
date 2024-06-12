@@ -10,8 +10,11 @@
 	let rigidBody: RAPIER.RigidBody;
 	let predatorService: PredatorService;
 
+	const SPEED = 4;
+	const DAMAGE = 20;
+
 	$: if (shark && rigidBody) {
-		predatorService = new PredatorService(shark, rigidBody);
+		predatorService = new PredatorService(shark, rigidBody, SPEED, DAMAGE);
 	}
 
 	useTask((delta) => {
