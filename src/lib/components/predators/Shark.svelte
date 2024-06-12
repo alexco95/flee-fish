@@ -19,9 +19,7 @@
 	});
 
 	function handleCollision(event: CollisionEnterEvent) {
-		if (event.targetRigidBody) {
-			predatorService.handleCollision(event.targetRigidBody);
-		}
+		predatorService.handleCollision(event);
 	}
 </script>
 
