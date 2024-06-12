@@ -10,8 +10,9 @@ export class PredatorService {
 	private hasCollided = false;
 
 	constructor(private mesh: Group, private rigidBody: RAPIER.RigidBody) {
-		this.mesh.position.copy(this.generateRandomPosition());
-		this.rigidBody.setTranslation(this.mesh.position, true);
+		const initialPosition = this.generateRandomPosition();
+		this.mesh.position.copy(initialPosition);
+		this.rigidBody.setTranslation(initialPosition, true);
 	}
 
 	updateTrajectory(delta: number): void {
@@ -20,16 +21,13 @@ export class PredatorService {
 		const targetPosition = get(playerPosition);
 		const currentPosition = this.mesh.position;
 
-		// Calcular la dirección inicial si no se ha calculado antes
+		// Update direction towards player
 		if (!this.hasCollided) {
-			this.direction = new Vector3().subVectors(targetPosition, currentPosition).normalize();
+			this.direction.subVectors(targetPosition, currentPosition).normalize();
 		}
 
-		// Mover al depredador en la dirección del PlayerFish o en una nueva dirección aleatoria si ha colisionado
-		currentPosition.add(this.direction.clone().multiplyScalar(delta * 5));
-
-		// Copiar la nueva posición al mesh
-		this.mesh.position.copy(currentPosition);
+		// Move predator
+		currentPosition.addScaledVector(this.direction, delta * 5);
 		this.rigidBody.setTranslation(currentPosition, true);
 	}
 
@@ -37,7 +35,7 @@ export class PredatorService {
 		this.hasCollided = true;
 
 		// Cambiar dirección aleatoriamente después de la colisión
-		this.direction = new Vector3(Math.random() - 0.5, Math.random() - 0.5, 0).normalize();
+		this.direction.set(Math.random() - 0.5, Math.random() - 0.5, 0).normalize();
 
 		if (event.targetRigidBody?.handle === 0) { // consider adding playerFish name into rigid body userData
 			reduceHealth(5);
