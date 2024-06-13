@@ -12,10 +12,10 @@ export class Consumable {
     constructor(
         private mesh: Group,
         private rigidBody: RAPIER.RigidBody,
-        private onConsumed: () => void, 
-        private speed = 5, 
-        private floatSpeed = 5, 
-        private floatRange = 0.5, 
+        private onConsumed: () => void,
+        private speed = 5,
+        private floatSpeed = 5,
+        private floatRange = 0.5,
         private healthBoost = 10
     ) {
         const initialPosition = this.generateRandomPosition();
@@ -28,22 +28,15 @@ export class Consumable {
 
         const currentConsumablePosition = this.mesh.position;
 
-        // Update direction towards player
         if (!this.hasCollided) {
-            // const targetPosition = get(playerPosition);
-            // this.direction.subVectors(targetPosition, currentConsumablePosition).normalize();
-            currentConsumablePosition.z = currentConsumablePosition.z - Math.sin(delta * this.floatSpeed) * this.floatRange;
+            // Move forward
+            currentConsumablePosition.z -= Math.sin(delta * this.floatSpeed) * this.floatRange;
+            this.rigidBody.setTranslation(currentConsumablePosition, true);
         }
-
-        // Move predator
-        this.rigidBody.setTranslation(currentConsumablePosition, true);
     }
 
     handleCollision(event: CollisionEnterEvent): void {
         this.hasCollided = true;
-
-        // Change direction randomly after collision
-        // this.direction.set(Math.random() - 0.5, Math.random() - 0.5, 0).normalize();
 
         if (event.targetRigidBody?.handle === 0) { // consider adding playerFish name into rigid body userData
             increaseHealth(this.healthBoost);
