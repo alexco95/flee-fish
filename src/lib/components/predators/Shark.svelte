@@ -5,6 +5,7 @@
 	import { Group } from 'three';
 	import { PredatorService } from './predator-service';
 	import RAPIER from '@dimforge/rapier3d-compat';
+	import { fade } from '$lib/transitions';
 
 	let shark: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -32,7 +33,7 @@
 			<Float speed={10}>
 				<T.Mesh>
 					<T.SphereGeometry args={[0.5, 32, 32]} />
-					<T.MeshStandardMaterial color="blue" />
+					<T.MeshStandardMaterial color="blue" transition={fade} />
 				</T.Mesh>
 			</Float>
 		</AutoColliders>
