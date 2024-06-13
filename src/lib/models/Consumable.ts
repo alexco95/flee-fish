@@ -5,7 +5,7 @@ import type { CollisionEnterEvent } from "@threlte/rapier";
 import { get } from "svelte/store";
 import { Group, Mesh, Vector3 } from "three";
 
-export class ConsumableService {
+export class Consumable {
     private direction = new Vector3();
     private hasCollided = false;
 
@@ -24,7 +24,7 @@ export class ConsumableService {
         if (!this.hasCollided) {
             // const targetPosition = get(playerPosition);
             // this.direction.subVectors(targetPosition, currentConsumablePosition).normalize();
-            currentConsumablePosition.y = currentConsumablePosition.y + Math.sin(delta * this.floatSpeed) * this.floatRange;
+            currentConsumablePosition.z = currentConsumablePosition.z - Math.sin(delta * this.floatSpeed) * this.floatRange;
         }
 
         // Move predator

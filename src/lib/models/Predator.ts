@@ -5,7 +5,7 @@ import type { CollisionEnterEvent } from "@threlte/rapier";
 import { get } from "svelte/store";
 import { Group, Mesh, Vector3 } from "three";
 
-export class PredatorService {
+export class Predator {
 	private direction = new Vector3();
 	private hasCollided = false;
 

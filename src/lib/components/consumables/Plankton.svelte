@@ -1,16 +1,15 @@
 <script lang="ts">
-	import { increaseHealth } from '$lib/stores/healthStore';
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { T, useTask } from '@threlte/core';
 	import { AutoColliders, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
 	import type { Group } from 'three';
-	import { ConsumableService } from './consumable-service';
 	import { fade } from '$lib/transitions';
+	import { Consumable } from '$lib/models/Consumable';
 
 	let plankton: Group;
 	let rigidBody: RAPIER.RigidBody;
+	let consumable: Consumable;
 	let consumed = false;
-	let consumableService: ConsumableService;
 
 	const SPEED = 1;
 	const FLOAT_SPEED = 2;
@@ -18,27 +17,17 @@
 	const HEALTH_BOOST = 10;
 
 	$: if (plankton && rigidBody) {
-		consumableService = new ConsumableService(
-			plankton,
-			rigidBody,
-			SPEED,
-			FLOAT_SPEED,
-			FLOAT_RANGE,
-			HEALTH_BOOST
-		);
+		consumable = new Consumable(plankton, rigidBody, SPEED, FLOAT_SPEED, FLOAT_RANGE, HEALTH_BOOST);
 	}
 
 	useTask((delta) => {
 		if (!consumed) {
-			consumableService.updateTrajectory(delta);
+			consumable.updateTrajectory(delta);
 		}
 	});
 
 	function handleCollision(event: CollisionEnterEvent) {
-		if (event.targetRigidBody?.handle === 0) {
-			consumed = true;
-			increaseHealth(10);
-		}
+		consumable.handleCollision(event);
 	}
 </script>
 

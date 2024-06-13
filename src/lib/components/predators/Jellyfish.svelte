@@ -3,27 +3,27 @@
 	import { Float } from '@threlte/extras';
 	import { AutoColliders, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
 	import { Group } from 'three';
-	import { PredatorService } from './predator-service';
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { fade } from '$lib/transitions';
+	import { Predator } from '$lib/models/Predator';
 
 	let jellyFish: Group;
 	let rigidBody: RAPIER.RigidBody;
-	let predatorService: PredatorService;
+	let predator: Predator;
 
 	const SPEED = 1;
 	const DAMAGE = 3;
 
 	$: if (jellyFish && rigidBody) {
-		predatorService = new PredatorService(jellyFish, rigidBody, SPEED, DAMAGE);
+		predator = new Predator(jellyFish, rigidBody, SPEED, DAMAGE);
 	}
 
 	useTask((delta) => {
-		predatorService.updateTrajectory(delta);
+		predator.updateTrajectory(delta);
 	});
 
 	function handleCollision(event: CollisionEnterEvent) {
-		predatorService.handleCollision(event);
+		predator.handleCollision(event);
 	}
 </script>
 

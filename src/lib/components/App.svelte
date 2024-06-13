@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core';
 	import Scene from './Scene.svelte';
-	import { PerfMonitor } from '@threlte/extras';
+	import { Gizmo, PerfMonitor } from '@threlte/extras';
 	import { Debug, World } from '@threlte/rapier';
 	import Timer from './Timer.svelte';
 	import { Pane, Checkbox, Button } from 'svelte-tweakpane-ui';
