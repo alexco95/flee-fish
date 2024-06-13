@@ -32,7 +32,7 @@
 		<AutoColliders>
 			<Float speed={10}>
 				<T.Mesh>
-					<T.SphereGeometry args={[0.5, 32, 32]} />
+					<T.BoxGeometry args={[1, 1, 1.4]} />
 					<T.MeshStandardMaterial color="blue" transition={fade} />
 				</T.Mesh>
 			</Float>
