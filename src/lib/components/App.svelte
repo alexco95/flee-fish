@@ -4,9 +4,10 @@
 	import { PerfMonitor } from '@threlte/extras';
 	import { Debug, World } from '@threlte/rapier';
 	import Timer from './Timer.svelte';
-	import { Pane, Checkbox, Button } from 'svelte-tweakpane-ui';
+	import { Pane, Checkbox, Button, Slider } from 'svelte-tweakpane-ui';
 	import { godMode, increaseHealth, reduceHealth } from '$lib/stores/healthStore';
 	import HealthBar from './HealthBar.svelte';
+	import { damageFactor, speedFactor } from '$lib/stores/gameSettingsStore';
 
 	let perfMonitorEnabled = false;
 	let debugEnabled = false;
@@ -18,7 +19,10 @@
 	<Button on:click={() => reduceHealth(5)} label="- Health"></Button>
 	<Button on:click={() => increaseHealth(5)} label="+ Health"></Button>
 	<Checkbox bind:value={$godMode} label="God Mode"></Checkbox>
-</Pane>
+	<Slider bind:value={$speedFactor} min={0.1} max={1} step={0.1} label="Predators Speed"></Slider>
+	<Slider bind:value={$damageFactor} min={0.1} max={1} step={0.1} label="Damage Factor"
+	></Slider></Pane
+>
 <HealthBar />
 <Timer />
 

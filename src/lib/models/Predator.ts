@@ -5,6 +5,7 @@ import type { CollisionEnterEvent } from "@threlte/rapier";
 import { get } from "svelte/store";
 import { Group, Matrix4, Quaternion, Vector3 } from "three";
 import { Utils } from "./Utils";
+import { damageFactor, speedFactor } from "$lib/stores/gameSettingsStore";
 
 export class Predator {
 	private direction = new Vector3();
@@ -25,14 +26,16 @@ export class Predator {
 	updateTrajectory(delta: number): void {
 		if (!this.mesh) return;
 
+		const currentSpeed = this.speed * get(speedFactor);
+
 		const predatorPosition = this.mesh.position;
 
 		if (!this.hasCollided) {
 			this.updateDirectionAndRotationTowardsPlayer(predatorPosition);
 		}
 
-		this.mesh.quaternion.rotateTowards(this.targetQuaternion, this.speed * delta);
-		predatorPosition.addScaledVector(this.direction, delta * this.speed);
+		this.mesh.quaternion.rotateTowards(this.targetQuaternion, currentSpeed * delta);
+		predatorPosition.addScaledVector(this.direction, delta * currentSpeed);
 		this.updateRigidBody(predatorPosition);
 	}
 
@@ -51,7 +54,7 @@ export class Predator {
 		this.updateRigidBody(currentPos);
 
 		if (event.targetRigidBody?.handle === 0) {
-			reduceHealth(this.damage);
+			reduceHealth(this.damage * get(damageFactor));
 		}
 	}
 
