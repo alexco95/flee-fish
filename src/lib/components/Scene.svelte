@@ -3,10 +3,10 @@
 	import PlayerFish from './PlayerFish.svelte';
 	import { Grid, transitions } from '@threlte/extras';
 	import { onMount, onDestroy } from 'svelte';
-	import { Game } from '$lib/models/Game';
+	import { Game, type GameObject } from '$lib/models/Game';
 
-	let predators = [];
-	let consumables = [];
+	let predators: GameObject[] = [];
+	let consumables: GameObject[] = [];
 
 	let game: Game;
 
@@ -37,6 +37,10 @@
 		game.clearIntervals();
 		document.removeEventListener('visibilitychange', game.handleVisibilityChange.bind(game));
 	});
+
+	function handleConsumed(id: number): void {
+		game.removeConsumable(id);
+	}
 </script>
 
 <T.AmbientLight intensity={0.5} />
@@ -49,11 +53,11 @@
 </T.PerspectiveCamera> -->
 
 {#each predators as predator}
-	<svelte:component this={predator} />
+	<svelte:component this={predator.component} />
 {/each}
 
 {#each consumables as consumable}
-	<svelte:component this={consumable} />
+	<svelte:component this={consumable.component} on:consumed={() => handleConsumed(consumable.id)} />
 {/each}
 
 <T.DirectionalLight intensity={0.8} position={[5, 10, 0]} />

@@ -9,7 +9,15 @@ export class Consumable {
     private direction = new Vector3();
     private hasCollided = false;
 
-    constructor(private mesh: Group, private rigidBody: RAPIER.RigidBody, private speed = 5, private floatSpeed = 5, private floatRange = 0.5, private healthBoost = 10) {
+    constructor(
+        private mesh: Group,
+        private rigidBody: RAPIER.RigidBody,
+        private onConsumed: () => void, 
+        private speed = 5, 
+        private floatSpeed = 5, 
+        private floatRange = 0.5, 
+        private healthBoost = 10
+    ) {
         const initialPosition = this.generateRandomPosition();
         this.mesh.position.copy(initialPosition);
         this.rigidBody.setTranslation(initialPosition, true);
@@ -39,6 +47,7 @@ export class Consumable {
 
         if (event.targetRigidBody?.handle === 0) { // consider adding playerFish name into rigid body userData
             increaseHealth(this.healthBoost);
+            this.onConsumed();
         }
     }
 

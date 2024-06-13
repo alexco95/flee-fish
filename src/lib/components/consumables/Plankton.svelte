@@ -5,11 +5,13 @@
 	import type { Group } from 'three';
 	import { fade } from '$lib/transitions';
 	import { Consumable } from '$lib/models/Consumable';
+	import { createEventDispatcher } from 'svelte';
 
 	let plankton: Group;
 	let rigidBody: RAPIER.RigidBody;
 	let consumable: Consumable;
 	let consumed = false;
+	const dispatch = createEventDispatcher();
 
 	const SPEED = 1;
 	const FLOAT_SPEED = 2;
@@ -17,7 +19,15 @@
 	const HEALTH_BOOST = 10;
 
 	$: if (plankton && rigidBody) {
-		consumable = new Consumable(plankton, rigidBody, SPEED, FLOAT_SPEED, FLOAT_RANGE, HEALTH_BOOST);
+		consumable = new Consumable(
+			plankton,
+			rigidBody,
+			handleConsumed,
+			SPEED,
+			FLOAT_SPEED,
+			FLOAT_RANGE,
+			HEALTH_BOOST
+		);
 	}
 
 	useTask((delta) => {
@@ -26,8 +36,12 @@
 		}
 	});
 
-	function handleCollision(event: CollisionEnterEvent) {
+	function handleCollision(event: CollisionEnterEvent): void {
 		consumable.handleCollision(event);
+	}
+
+	function handleConsumed(): void {
+		dispatch('consumed');
 	}
 </script>
 
@@ -36,7 +50,7 @@
 		<AutoColliders>
 			<T.Mesh>
 				<T.SphereGeometry args={[0.1, 16, 16]} />
-				<T.MeshStandardMaterial color="yellow" transition={fade} />
+				<T.MeshStandardMaterial color="yellow" in={fade} />
 			</T.Mesh>
 		</AutoColliders>
 	</RigidBody>

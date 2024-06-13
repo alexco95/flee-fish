@@ -2,18 +2,23 @@ import Shark from '$lib/components/predators/Shark.svelte';
 import Jellyfish from '$lib/components/predators/Jellyfish.svelte';
 import Plankton from '$lib/components/consumables/Plankton.svelte';
 import { gamePaused } from '$lib/stores/store';
-import { writable } from 'svelte/store';
+import { writable, type Writable } from 'svelte/store';
 
+export interface GameObject {
+    component: typeof Shark | typeof Jellyfish | typeof Plankton;
+    id: number;
+}
 
 export class Game {
-    predators = writable([]);
-    consumables = writable([]);
+    private _predators = writable<GameObject[]>([]);
+    private _consumables = writable<GameObject[]>([]);
 
-    predatorTypes = [Shark, Jellyfish];
-    consumableTypes = [Plankton];
+    private predatorTypes = [Shark, Jellyfish];
+    private consumableTypes = [Plankton];
+    private predatorsInterval: number | undefined = undefined;
+    private consumablesInterval: number | undefined = undefined;
 
-    predatorsInterval: number | undefined = undefined;
-    consumablesInterval: number | undefined = undefined;
+    private idCounter = 0;
 
     constructor() {
         gamePaused.subscribe((paused) => {
@@ -23,16 +28,22 @@ export class Game {
                 this.clearIntervals();
             }
         });
-
-
     }
 
-    startIntervals() {
+    get predators(): Writable<GameObject[]> {
+        return this._predators;
+    }
+
+    get consumables(): Writable<GameObject[]> {
+        return this._consumables;
+    }
+
+    startIntervals(): void {
         this.predatorsInterval = setInterval(() => this.addPredator(), 2000);
         this.consumablesInterval = setInterval(() => this.addConsumable(), 5000);
     }
 
-    clearIntervals() {
+    clearIntervals(): void {
         if (this.predatorsInterval !== undefined) {
             clearInterval(this.predatorsInterval);
         }
@@ -41,18 +52,21 @@ export class Game {
         }
     }
 
-    addPredator() {
+    addPredator(): void {
         const PredatorComponent = this.predatorTypes[Math.floor(Math.random() * this.predatorTypes.length)];
-        this.predators.update((predators) => [...predators, PredatorComponent ]);
+        this._predators.update((predators) => [...predators, { component: PredatorComponent, id: this.idCounter++ }]);
     }
 
-    addConsumable() {
+    addConsumable(): void {
         const ConsumableComponent = this.consumableTypes[Math.floor(Math.random() * this.consumableTypes.length)];
-        this.consumables.update((consumables) => [...consumables, ConsumableComponent ]);
+        this._consumables.update((consumables) => [...consumables, { component: ConsumableComponent, id: this.idCounter++ }]);
     }
 
+    removeConsumable(id: number): void {
+        this._consumables.update((consumables) => consumables.filter((consumable) => consumable.id !== id));
+    }
 
-    handleVisibilityChange() {
+    handleVisibilityChange(): void {
         gamePaused.set(document.hidden);
 
         if (document.hidden) {
