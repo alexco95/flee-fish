@@ -56,7 +56,7 @@
 	<svelte:component this={predator.component} />
 {/each}
 
-{#each consumables as consumable}
+{#each consumables as consumable (consumable.id)}
 	<svelte:component this={consumable.component} on:consumed={() => handleConsumed(consumable.id)} />
 {/each}
 

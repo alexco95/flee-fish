@@ -5,7 +5,6 @@ export const godMode = writable(false);
 
 export function reduceHealth(amount: number) {
   if (get(godMode)) return;
-  
   health.update((value) => Math.max(value - amount, 0));
 }
 
