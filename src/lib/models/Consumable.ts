@@ -1,7 +1,8 @@
 import { increaseHealth } from "$lib/stores/healthStore";
 import type RAPIER from "@dimforge/rapier3d-compat";
 import type { CollisionEnterEvent } from "@threlte/rapier";
-import { Group, Vector3 } from "three";
+import { Group } from "three";
+import { Utils } from "./Utils";
 
 export class Consumable {
     private hasCollided = false;
@@ -15,7 +16,7 @@ export class Consumable {
         private floatRange = 0.5,
         private healthBoost = 10
     ) {
-        const initialPosition = this.generateRandomPosition();
+        const initialPosition = Utils.generateRandomPosition();
         this.mesh.position.copy(initialPosition);
         this.rigidBody.setTranslation(initialPosition, true);
     }
@@ -39,12 +40,5 @@ export class Consumable {
             increaseHealth(this.healthBoost);
             this.onConsumed();
         }
-    }
-
-    private generateRandomPosition(): Vector3 {
-        const x = Math.random() * 10 - 5;
-        const y = Math.random() * 10 - 5;
-        const z = 10;
-        return new Vector3(x, y, z)
     }
 }

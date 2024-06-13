@@ -4,6 +4,7 @@ import type RAPIER from "@dimforge/rapier3d-compat";
 import type { CollisionEnterEvent } from "@threlte/rapier";
 import { get } from "svelte/store";
 import { Group, Matrix4, Quaternion, Vector3 } from "three";
+import { Utils } from "./Utils";
 
 export class Predator {
 	private direction = new Vector3();
@@ -12,84 +13,76 @@ export class Predator {
 	private hasCollided = false;
 
 	constructor(
-		private mesh: Group, 
-		private rigidBody: RAPIER.RigidBody, 
-		private speed = 5, 
+		private mesh: Group,
+		private rigidBody: RAPIER.RigidBody,
+		private speed = 5,
 		private damage = 5
 	) {
-		const initialPosition = this.generateRandomPosition();
-		this.mesh.position.copy(initialPosition);
-		this.rigidBody.setTranslation(initialPosition, true);
-
+		this.initializePosition();
 		this.setInitialOrientation();
 	}
 
 	updateTrajectory(delta: number): void {
 		if (!this.mesh) return;
-	
-		const currentPredatorPosition = this.mesh.position;
-	
-		// Update direction towards player
+
+		const predatorPosition = this.mesh.position;
+
 		if (!this.hasCollided) {
-		  const targetPosition = get(playerPosition);
-		  this.direction.subVectors(targetPosition, currentPredatorPosition).normalize();
-	
-		  // Compute target rotation
-		  this.rotationMatrix.lookAt(targetPosition, currentPredatorPosition, this.mesh.up);
-		  this.targetQuaternion.setFromRotationMatrix(this.rotationMatrix);
+			this.updateDirectionAndRotationTowardsPlayer(predatorPosition);
 		}
-	
-		// Rotate predator towards target direction
+
 		this.mesh.quaternion.rotateTowards(this.targetQuaternion, this.speed * delta);
-	
-		// Move predator
-		currentPredatorPosition.addScaledVector(this.direction, delta * this.speed);
-		this.rigidBody.setTranslation(currentPredatorPosition, true);
-	
-		// Update physics rotation
-		this.rigidBody.setRotation(this.mesh.quaternion, true);
-	  }
-	
-	  handleCollision(event: CollisionEnterEvent): void {
-		this.hasCollided = true;
-	
-		// Change direction randomly after collision
-		this.direction.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
-	
-		// Compute target rotation to escape
-		const currentPredatorPosition = this.mesh.position;
-		const targetPosition = currentPredatorPosition.clone().add(this.direction);
-	
-		this.rotationMatrix.lookAt(targetPosition, currentPredatorPosition, this.mesh.up);
-		this.targetQuaternion.setFromRotationMatrix(this.rotationMatrix);
-	
-		// Rotate predator towards escape direction
-		this.mesh.quaternion.slerp(this.targetQuaternion, 0.1);
-	
-		// Update physics rotation
-		this.rigidBody.setRotation(this.mesh.quaternion, true);
-
-		if (event.targetRigidBody?.handle === 0) { // consider adding playerFish name into rigid body userData
-			reduceHealth(this.damage);
-		}
-	  }
-
-	private generateRandomPosition(): Vector3 {
-		const x = Math.random() * 10 - 5;
-		const y = Math.random() * 10 - 5;
-		const z = 10;
-		return new Vector3(x, y, z)
+		predatorPosition.addScaledVector(this.direction, delta * this.speed);
+		this.updateRigidBody(predatorPosition);
 	}
 
-	setInitialOrientation(): void {
-		const targetPosition = get(playerPosition);
-		const currentPredatorPosition = this.mesh.position;
 
-		// Compute initial rotation to face the player
-		this.rotationMatrix.lookAt(targetPosition, currentPredatorPosition, this.mesh.up);
+	handleCollision(event: CollisionEnterEvent): void {
+		this.hasCollided = true;
+		this.direction.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
+
+		const currentPos = this.mesh.position;
+		const escapeTargetPos = currentPos.clone().add(this.direction);
+
+		this.rotationMatrix.lookAt(escapeTargetPos, currentPos, this.mesh.up);
+		this.targetQuaternion.setFromRotationMatrix(this.rotationMatrix);
+
+		this.mesh.quaternion.slerp(this.targetQuaternion, 0.1);
+		this.updateRigidBody(currentPos);
+
+		if (event.targetRigidBody?.handle === 0) {
+			reduceHealth(this.damage);
+		}
+	}
+
+	private initializePosition(): void {
+		const initialPosition = Utils.generateRandomPosition();
+		this.mesh.position.copy(initialPosition);
+		this.rigidBody.setTranslation(initialPosition, true);
+	}
+
+	private setInitialOrientation(): void {
+		const targetPosition = get(playerPosition);
+		const currentPos = this.mesh.position;
+
+		this.rotationMatrix.lookAt(targetPosition, currentPos, this.mesh.up);
 		this.targetQuaternion.setFromRotationMatrix(this.rotationMatrix);
 
 		this.mesh.quaternion.copy(this.targetQuaternion);
 		this.rigidBody.setRotation(this.mesh.quaternion, true);
 	}
+
+	private updateDirectionAndRotationTowardsPlayer(predatorPosition: Vector3): void {
+		const targetPosition = get(playerPosition);
+		this.direction.subVectors(targetPosition, predatorPosition).normalize();
+
+		this.rotationMatrix.lookAt(targetPosition, predatorPosition, this.mesh.up);
+		this.targetQuaternion.setFromRotationMatrix(this.rotationMatrix);
+	}
+
+	private updateRigidBody(position: Vector3): void {
+		this.rigidBody.setTranslation(position, true);
+		this.rigidBody.setRotation(this.mesh.quaternion, true);
+	}
+
 }
