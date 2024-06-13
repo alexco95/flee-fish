@@ -11,8 +11,8 @@
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
 
-	const SPEED = 4;
-	const DAMAGE = 20;
+	const SPEED = 7;
+	const DAMAGE = 70;
 
 	$: if (shark && rigidBody) {
 		predator = new Predator(shark, rigidBody, SPEED, DAMAGE);

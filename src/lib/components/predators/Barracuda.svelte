@@ -7,15 +7,15 @@
 	import { fade } from '$lib/transitions';
 	import { Predator } from '$lib/models/Predator';
 
-	let jellyFish: Group;
+	let barracuda: Group;
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
 
-	const SPEED = 2;
-	const DAMAGE = 20;
+	const SPEED = 10;
+	const DAMAGE = 60;
 
-	$: if (jellyFish && rigidBody) {
-		predator = new Predator(jellyFish, rigidBody, SPEED, DAMAGE);
+	$: if (barracuda && rigidBody) {
+		predator = new Predator(barracuda, rigidBody, SPEED, DAMAGE);
 	}
 
 	useTask((delta) => {
@@ -27,13 +27,13 @@
 	}
 </script>
 
-<T.Group bind:ref={jellyFish}>
+<T.Group bind:ref={barracuda}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<AutoColliders>
 			<Float speed={10}>
 				<T.Mesh>
-					<T.BoxGeometry />
-					<T.MeshStandardMaterial color="green" transition={fade} />
+					<T.BoxGeometry args={[1, 1, 1.2]} />
+					<T.MeshStandardMaterial color="black" transition={fade} />
 				</T.Mesh>
 			</Float>
 		</AutoColliders>
