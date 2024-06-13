@@ -1,12 +1,9 @@
-import { increaseHealth, reduceHealth } from "$lib/stores/healthStore";
-import { playerPosition } from "$lib/stores/store";
+import { increaseHealth } from "$lib/stores/healthStore";
 import type RAPIER from "@dimforge/rapier3d-compat";
 import type { CollisionEnterEvent } from "@threlte/rapier";
-import { get } from "svelte/store";
-import { Group, Mesh, Vector3 } from "three";
+import { Group, Vector3 } from "three";
 
 export class Consumable {
-    private direction = new Vector3();
     private hasCollided = false;
 
     constructor(
