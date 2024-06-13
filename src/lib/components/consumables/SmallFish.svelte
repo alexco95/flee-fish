@@ -49,7 +49,7 @@
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<AutoColliders>
 			<T.Mesh>
-				<T.SphereGeometry args={[0.7, 16, 16]} />
+				<T.BoxGeometry args={[0.02, 0.08, 0.15]} />
 				<T.MeshStandardMaterial color="orange" in={fade} />
 			</T.Mesh>
 		</AutoColliders>

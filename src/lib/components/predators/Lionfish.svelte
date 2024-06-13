@@ -6,18 +6,17 @@
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { fade } from '$lib/transitions';
 	import { Predator } from '$lib/models/Predator';
+	import Lionfish from '../models/Lionfish.svelte';
 
-	let jellyFish: Group;
+	let lionFish: Group;
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
 
 	const SPEED = 2;
 	const DAMAGE = 20;
-	const jellyfishDiameter = 0.3;
-	const jellyfishHeight = 0.4;
 
-	$: if (jellyFish && rigidBody) {
-		predator = new Predator(jellyFish, rigidBody, SPEED, DAMAGE);
+	$: if (lionFish && rigidBody) {
+		predator = new Predator(lionFish, rigidBody, SPEED, DAMAGE);
 	}
 
 	useTask((delta) => {
@@ -29,17 +28,16 @@
 	}
 </script>
 
-<T.Group bind:ref={jellyFish}>
+<T.Group bind:ref={lionFish}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<AutoColliders>
-			<Float speed={10}>
+			<Lionfish />
+			<!-- <Float speed={10}>
 				<T.Mesh>
-					<T.CylinderGeometry
-						args={[jellyfishDiameter * 0.5, jellyfishDiameter * 0.5, jellyfishHeight, 32]}
-					/>
-					<T.MeshStandardMaterial color="pink" transparent={true} opacity={0.6} transition={fade} />
+					<T.BoxGeometry />
+					<T.MeshStandardMaterial color="green" transition={fade} />
 				</T.Mesh>
-			</Float>
+			</Float> -->
 		</AutoColliders>
 	</RigidBody>
 </T.Group>

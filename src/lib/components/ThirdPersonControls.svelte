@@ -31,7 +31,7 @@
 		// the object's position is bound to the prop
 		if (!object) return;
 
-		// camera is based on character so we rotation character first
+		// camera is based on character so we rotate character first
 		rotationQuat.setFromAxisAngle(axis, -rotateDelta.x * rotateSpeed * delta);
 		object.quaternion.multiply(rotationQuat);
 

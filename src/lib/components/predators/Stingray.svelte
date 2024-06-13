@@ -11,7 +11,7 @@
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
 
-	const SPEED = 5;
+	const SPEED = 2;
 	const DAMAGE = 30;
 
 	$: if (stingray && rigidBody) {
@@ -32,7 +32,7 @@
 		<AutoColliders>
 			<Float speed={10}>
 				<T.Mesh>
-					<T.BoxGeometry args={[0.5, 0.5, 1.2]} />
+					<T.BoxGeometry args={[1.5, 0.1, 2]} />
 					<T.MeshStandardMaterial color="brown" transition={fade} />
 				</T.Mesh>
 			</Float>

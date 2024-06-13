@@ -104,7 +104,7 @@
 	}
 </script>
 
-<T.PerspectiveCamera makeDefault fov={90} far={50}>
+<T.PerspectiveCamera makeDefault fov={75} far={50}>
 	<ThirdPersonControls bind:object={playerRef} />
 </T.PerspectiveCamera>
 
@@ -114,7 +114,7 @@
 		<AutoColliders>
 			<Float floatIntensity={[0.5, 0.5, 0.5]} speed={5}>
 				<T.Mesh>
-					<T.BoxGeometry />
+					<T.BoxGeometry args={[0.05, 0.1, 0.2]} />
 					<T.MeshStandardMaterial color="orange" />
 				</T.Mesh>
 			</Float>

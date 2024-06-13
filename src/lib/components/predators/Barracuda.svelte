@@ -11,7 +11,7 @@
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
 
-	const SPEED = 10;
+	const SPEED = 5;
 	const DAMAGE = 60;
 
 	$: if (barracuda && rigidBody) {
@@ -32,7 +32,7 @@
 		<AutoColliders>
 			<Float speed={10}>
 				<T.Mesh>
-					<T.BoxGeometry args={[1, 1, 1.2]} />
+					<T.BoxGeometry args={[0.2, 0.3, 1.5]} />
 					<T.MeshStandardMaterial color="black" transition={fade} />
 				</T.Mesh>
 			</Float>
