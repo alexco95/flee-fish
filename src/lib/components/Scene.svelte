@@ -3,68 +3,39 @@
 	import PlayerFish from './PlayerFish.svelte';
 	import { Grid, transitions } from '@threlte/extras';
 	import { onMount, onDestroy } from 'svelte';
-	import { gamePaused } from '$lib/stores/store';
-	import Shark from './predators/Shark.svelte';
-	import Jellyfish from './predators/Jellyfish.svelte';
-	import Plankton from './consumables/Plankton.svelte';
+	import { Game } from '$lib/models/Game';
 
-	let predators: any[] = [];
-	let consumables: any[] = [];
-	const predatorTypes = [Shark, Jellyfish];
-	const consumableTypes = [Plankton];
-	let predatorsInterval: number;
-	let consumablesInterval: number;
+	let predators = [];
+	let consumables = [];
+
+	let game: Game;
+
+	$: if (game) {
+		game.predators.subscribe((value) => {
+			predators = value;
+		});
+
+		game.consumables.subscribe((value) => {
+			consumables = value;
+		});
+	}
 
 	transitions();
 
-	function addPredator(): void {
-		if (!$gamePaused) {
-			const PredatorComponent = predatorTypes[Math.floor(Math.random() * predatorTypes.length)];
-			predators = [...predators, PredatorComponent];
-		}
-	}
-
-	function addConsumable(): void {
-		if (!$gamePaused) {
-			const ConsumableComponent =
-				consumableTypes[Math.floor(Math.random() * consumableTypes.length)];
-			consumables = [...consumables, ConsumableComponent];
-		}
-	}
-
-	function startIntervals(): void {
-		predatorsInterval = setInterval(addPredator, 2000);
-		consumablesInterval = setInterval(addConsumable, 5000);
-	}
-
-	function clearIntervals(): void {
-		clearInterval(predatorsInterval);
-		clearInterval(consumablesInterval);
-	}
-
-	function handleVisibilityChange(): void {
-		gamePaused.set(document.hidden);
-
-		if (document.hidden) {
-			clearIntervals();
-		} else {
-			startIntervals();
-		}
-	}
-
 	onMount(() => {
-		startIntervals();
-		document.addEventListener('visibilitychange', handleVisibilityChange);
+		game = new Game();
+
+		document.addEventListener('visibilitychange', game.handleVisibilityChange.bind(game));
 
 		return () => {
-			clearIntervals();
-			document.removeEventListener('visibilitychange', handleVisibilityChange);
+			game.clearIntervals();
+			document.removeEventListener('visibilitychange', game.handleVisibilityChange.bind(game));
 		};
 	});
 
 	onDestroy(() => {
-		clearIntervals();
-		document.removeEventListener('visibilitychange', handleVisibilityChange);
+		game.clearIntervals();
+		document.removeEventListener('visibilitychange', game.handleVisibilityChange.bind(game));
 	});
 </script>
 
