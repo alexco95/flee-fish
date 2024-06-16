@@ -6,6 +6,7 @@
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { fade } from '$lib/transitions';
 	import { Predator } from '$lib/models/Predator';
+	import Shark from '../models/Shark.svelte';
 
 	let shark: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -31,10 +32,7 @@
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<AutoColliders>
 			<Float speed={10}>
-				<T.Mesh>
-					<T.BoxGeometry args={[1.2, 1.5, 4.5]} />
-					<T.MeshStandardMaterial color="blue" transition={fade} />
-				</T.Mesh>
+				<Shark />
 			</Float>
 		</AutoColliders>
 	</RigidBody>

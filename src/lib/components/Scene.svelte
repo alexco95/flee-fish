@@ -47,7 +47,7 @@
 <T.AmbientLight intensity={0.5} />
 <T.PointLight position={[10, 10, 10]} />
 
-<Ground />
+<!-- <Ground /> -->
 
 <PlayerFish />
 

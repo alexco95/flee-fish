@@ -14,10 +14,7 @@ const config = {
 		adapter: adapter()
 	},
 	vitePlugin: {
-		experimental: {
-			inspector: true,
-			showToggleButton: 'always'
-		}
+		inspector: true
 	}
 };
 
