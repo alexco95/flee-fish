@@ -9,13 +9,15 @@
 	let shark: Group;
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
+
+	let swim: () => void;
 	let attack: () => void;
 
 	const SPEED = 4.5;
 	const DAMAGE = 70;
 
 	$: if (shark && rigidBody) {
-		predator = new Predator(shark, rigidBody, SPEED, DAMAGE);
+		predator = new Predator(shark, rigidBody, SPEED, DAMAGE, attack, swim);
 	}
 
 	useTask((delta) => {
@@ -24,21 +26,12 @@
 
 	function handleCollision(event: CollisionEnterEvent) {
 		predator.handleCollision(event);
-		attack();
 	}
 </script>
 
 <T.Group bind:ref={shark}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
-		<!-- <AutoColliders>
-			<Float speed={10}>
-				<T.Mesh>
-					<T.BoxGeometry args={[1.2, 1.5, 4.5]} />
-					<T.MeshStandardMaterial color="blue" transition={fade} />
-				</T.Mesh>
-			</Float>
-		</AutoColliders> -->
 		<Collider shape={'cuboid'} args={[0.6, 0.75, 2.25]} />
-		<SharkModel bind:attack />
+		<SharkModel bind:swim bind:attack />
 	</RigidBody>
 </T.Group>

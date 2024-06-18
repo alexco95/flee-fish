@@ -12,12 +12,17 @@ export class Predator {
 	private rotationMatrix = new Matrix4();
 	private targetQuaternion = new Quaternion();
 	private hasCollided = false;
+	private proximityThreshold = 4;
+	private disengageThreshold = 2;
+	private isAttacking = false;
 
 	constructor(
 		private mesh: Group,
 		private rigidBody: RAPIER.RigidBody,
 		private speed = 5,
-		private damage = 5
+		private damage = 5,
+		private attack?: () => void,
+		private swim?: () => void
 	) {
 		this.initializePosition();
 		this.setInitialOrientation();
@@ -37,8 +42,9 @@ export class Predator {
 		this.mesh.quaternion.rotateTowards(this.targetQuaternion, currentSpeed * delta);
 		predatorPosition.addScaledVector(this.direction, delta * currentSpeed);
 		this.updateRigidBody(predatorPosition);
-	}
 
+		this.handleAttack(predatorPosition);
+	}
 
 	handleCollision(event: CollisionEnterEvent): void {
 		this.hasCollided = true;
@@ -86,6 +92,20 @@ export class Predator {
 	private updateRigidBody(position: Vector3): void {
 		this.rigidBody.setTranslation(position, true);
 		this.rigidBody.setRotation(this.mesh.quaternion, true);
+	}
+
+	private handleAttack(predatorPosition: Vector3) {
+		const currentPlayerPosition = get(playerPosition);
+		const distanceToPlayer = predatorPosition.distanceTo(currentPlayerPosition);
+
+		if (distanceToPlayer < this.proximityThreshold && !this.isAttacking && this.attack) {
+			this.attack();
+			this.isAttacking = true;
+		} else if (distanceToPlayer > this.disengageThreshold && this.isAttacking && this.swim) {
+			// TODO check if the predator is still in the attack animation
+			this.swim();
+			this.isAttacking = false;
+		}
 	}
 
 }
