@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { T, useTask } from '@threlte/core';
-	import { Float } from '@threlte/extras';
-	import { AutoColliders, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
+	import { Collider, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
 	import { Group } from 'three';
 	import RAPIER from '@dimforge/rapier3d-compat';
-	import { fade } from '$lib/transitions';
 	import { Predator } from '$lib/models/Predator';
-	import Shark from '../models/Shark.svelte';
+	import SharkModel from '../models/SharkModel.svelte';
 
 	let shark: Group;
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
+	let attack: () => void;
 
 	const SPEED = 4.5;
 	const DAMAGE = 70;
@@ -25,15 +24,21 @@
 
 	function handleCollision(event: CollisionEnterEvent) {
 		predator.handleCollision(event);
+		attack();
 	}
 </script>
 
 <T.Group bind:ref={shark}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
-		<AutoColliders>
+		<!-- <AutoColliders>
 			<Float speed={10}>
-				<Shark />
+				<T.Mesh>
+					<T.BoxGeometry args={[1.2, 1.5, 4.5]} />
+					<T.MeshStandardMaterial color="blue" transition={fade} />
+				</T.Mesh>
 			</Float>
-		</AutoColliders>
+		</AutoColliders> -->
+		<Collider shape={'cuboid'} args={[0.6, 0.75, 2.25]} />
+		<SharkModel bind:attack />
 	</RigidBody>
 </T.Group>
