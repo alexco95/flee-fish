@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { T, useTask } from '@threlte/core';
-	import { Float } from '@threlte/extras';
-	import { AutoColliders, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
+	import { Collider, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
 	import { Group } from 'three';
 	import RAPIER from '@dimforge/rapier3d-compat';
-	import { fade } from '$lib/transitions';
 	import { Predator } from '$lib/models/Predator';
+	import MantaRayModel from '../models/MantaRayModel.svelte';
 
 	let stingray: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -29,13 +28,7 @@
 
 <T.Group bind:ref={stingray}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
-		<AutoColliders>
-			<Float speed={10}>
-				<T.Mesh>
-					<T.BoxGeometry args={[1.5, 0.1, 2]} />
-					<T.MeshStandardMaterial color="brown" transition={fade} />
-				</T.Mesh>
-			</Float>
-		</AutoColliders>
+		<Collider shape={'cuboid'} args={[1.5, 0.1, 2]} />
+		<MantaRayModel />
 	</RigidBody>
 </T.Group>
