@@ -17,7 +17,13 @@ export class Game {
     private _predators = writable<GameObject[]>([]);
     private _consumables = writable<GameObject[]>([]);
 
-    private predatorTypes = [Shark, Jellyfish, Barracuda, Stingray, Lionfish];
+    private predatorTypes = [
+        Shark, 
+        Jellyfish, 
+        Barracuda, 
+        Stingray, 
+        Lionfish
+    ];
     private consumableTypes = [Plankton, SmallFish];
     private predatorsInterval: number | undefined = undefined;
     private consumablesInterval: number | undefined = undefined;

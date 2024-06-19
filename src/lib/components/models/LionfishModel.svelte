@@ -38,10 +38,26 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 		};
 	};
 
-	const gltf = useGltf<GLTFResult>('/models/Lionfish.glb');
+	const gltf = useGltf<GLTFResult>(`/models/Lionfish.glb?${Math.random()}`);
 	export const { actions, mixer } = useGltfAnimations<ActionName>(gltf, ref);
 
+	$: if ($actions) {
+		swim();
+	}
+
 	const component = forwardEventHandlers();
+
+	export function swim() {
+		$actions['Fish_Armature|Swimming_Normal']?.play();
+	}
+
+	export function swimFast() {
+		$actions['Fish_Armature|Swimming_Fast']?.play();
+	}
+
+	export function attack() {
+		$actions['Fish_Armature|Attack']?.play();
+	}
 </script>
 
 <T is={ref} dispose={false} {...$$restProps} bind:this={$component}>

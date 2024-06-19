@@ -5,12 +5,16 @@
 	import { Vector3, type Mesh } from 'three';
 	import ThirdPersonControls from './ThirdPersonControls.svelte';
 	import { onMount } from 'svelte';
-	import { AutoColliders, RigidBody } from '@threlte/rapier';
+	import { AutoColliders, Collider, RigidBody } from '@threlte/rapier';
 	import { health } from '$lib/stores/healthStore';
+	import RAPIER from '@dimforge/rapier3d-compat';
+	import MandarinFish from './models/MandarinFish.svelte';
 
-	let player: Mesh;
-	let playerRef: Mesh;
-	let rigidBody: RigidBody;
+	let player: THREE.Group;
+	let playerRef: THREE.Group;
+	let rigidBody: RAPIER.RigidBody;
+
+	let die: () => void;
 
 	$: if ($health === 0) {
 		handleDeath();
@@ -97,6 +101,7 @@
 	function handleDeath(): void {
 		isDead = true;
 		rigidBody.setGravityScale(1, true);
+		die(); // TODO: check why animation does not complete
 
 		// Asegurar que el pez caiga directamente hacia abajo sin otras fuerzas
 		// rigidBody.setLinvel(new Vector3(0, 0, 0), true); // Reiniciar velocidad lineal
@@ -110,15 +115,7 @@
 
 <T.Group bind:ref={player}>
 	<RigidBody bind:rigidBody gravityScale={0} enabledRotations={[false, false, false]}>
-		<!-- <CollisionGroups groups={[0]}> -->
-		<AutoColliders>
-			<Float floatIntensity={[0.5, 0.5, 0.5]} speed={5}>
-				<T.Mesh>
-					<T.BoxGeometry args={[0.05, 0.1, 0.2]} />
-					<T.MeshStandardMaterial color="orange" />
-				</T.Mesh>
-			</Float>
-		</AutoColliders>
-		<!-- </CollisionGroups> -->
+		<Collider shape={'cuboid'} args={[0.2, 0.2, 0.2]} />
+		<MandarinFish bind:die />
 	</RigidBody>
 </T.Group>

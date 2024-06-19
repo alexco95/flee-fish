@@ -31,6 +31,7 @@
 
 <T.Group bind:ref={shark}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
+		<!-- TODO: update args accordingly -->
 		<Collider shape={'cuboid'} args={[0.6, 0.75, 2.25]} />
 		<SharkModel bind:swim bind:attack />
 	</RigidBody>
