@@ -46,7 +46,9 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	const component = forwardEventHandlers();
 
 	$: if ($gltf) {
-		$gltf.materials.Pufferfish_Main.side = THREE.DoubleSide; // TODO: check this
+		$gltf.materials.Pufferfish_Main.side = THREE.DoubleSide;
+		$gltf.materials.Puffefish_Black.side = THREE.DoubleSide;
+		$gltf.materials.Pufferfish_Light.side = THREE.DoubleSide;
 	}
 
 	$: if ($actions) {

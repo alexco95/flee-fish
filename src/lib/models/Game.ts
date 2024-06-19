@@ -1,7 +1,6 @@
 import Shark from '$lib/components/predators/Shark.svelte';
 import Jellyfish from '$lib/components/predators/Jellyfish.svelte';
 import Plankton from '$lib/components/consumables/Plankton.svelte';
-import Barracuda from '$lib/components/predators/Barracuda.svelte';
 import { gamePaused } from '$lib/stores/store';
 import { writable, type Writable } from 'svelte/store';
 import SmallFish from '$lib/components/consumables/SmallFish.svelte';
@@ -11,7 +10,7 @@ import Puffer from '$lib/components/predators/Puffer.svelte';
 import Swordfish from '$lib/components/predators/Swordfish.svelte';
 
 export interface GameObject {
-    component: typeof Shark | typeof Jellyfish | typeof Plankton | typeof Barracuda | typeof MantaRay | typeof Lionfish | typeof Puffer | typeof Swordfish;
+    component: typeof Shark | typeof Jellyfish | typeof Plankton | typeof MantaRay | typeof Lionfish | typeof Puffer | typeof Swordfish;
     id: number;
 }
 
@@ -22,7 +21,6 @@ export class Game {
     private predatorTypes = [
         Shark, 
         Jellyfish, 
-        Barracuda, 
         MantaRay, 
         Lionfish,
         Puffer,

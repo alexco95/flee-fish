@@ -4,7 +4,7 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 -->
 
 <script lang="ts">
-	import type * as THREE from 'three';
+	import * as THREE from 'three';
 	import { Group } from 'three';
 	import { T, type Props, type Events, type Slots, forwardEventHandlers } from '@threlte/core';
 	import { useGltf, useGltfAnimations } from '@threlte/extras';
@@ -42,6 +42,12 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	export const { actions, mixer } = useGltfAnimations<ActionName>(gltf, ref);
 
 	const component = forwardEventHandlers();
+
+	$: if ($gltf) {
+		$gltf.materials.Swordfish_Main.side = THREE.DoubleSide;
+		$gltf.materials.Swordfish_Dark.side = THREE.DoubleSide;
+		$gltf.materials.Swordfish_Light.side = THREE.DoubleSide;
+	}
 
 	$: if ($actions) {
 		swim();

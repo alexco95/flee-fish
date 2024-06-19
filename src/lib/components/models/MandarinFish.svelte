@@ -43,7 +43,9 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	export const { actions, mixer } = useGltfAnimations<ActionName>(gltf, ref);
 
 	$: if ($gltf) {
-		$gltf.materials.MandarinFish_Main.side = THREE.DoubleSide; // TODO: check this
+		$gltf.materials.MandarinFish_Main.side = THREE.DoubleSide;
+		$gltf.materials.MandarinFish_Dark.side = THREE.DoubleSide;
+		$gltf.materials.MandarinFish_Light.side = THREE.DoubleSide;
 	}
 
 	$: if ($actions) {

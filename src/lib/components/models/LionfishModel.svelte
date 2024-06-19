@@ -4,7 +4,7 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 -->
 
 <script lang="ts">
-	import type * as THREE from 'three';
+	import * as THREE from 'three';
 	import { Group } from 'three';
 	import { T, type Props, type Events, type Slots, forwardEventHandlers } from '@threlte/core';
 	import { useGltf, useGltfAnimations } from '@threlte/extras';
@@ -40,6 +40,12 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 
 	const gltf = useGltf<GLTFResult>(`/models/Lionfish.glb?${Math.random()}`);
 	export const { actions, mixer } = useGltfAnimations<ActionName>(gltf, ref);
+
+	$: if ($gltf) {
+		$gltf.materials.Lionfish_Main.side = THREE.DoubleSide;
+		$gltf.materials.Lionfish_Fins.side = THREE.DoubleSide;
+		$gltf.materials.Lionfish_Light.side = THREE.DoubleSide;
+	}
 
 	$: if ($actions) {
 		swim();
