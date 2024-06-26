@@ -3,10 +3,10 @@
 	import Scene from './Scene.svelte';
 	import { PerfMonitor } from '@threlte/extras';
 	import { Debug, World } from '@threlte/rapier';
-	import Timer from './Timer.svelte';
+	import Timer from './ui/Timer.svelte';
 	import { Pane, Checkbox, Button, Slider } from 'svelte-tweakpane-ui';
 	import { godMode, increaseHealth, reduceHealth } from '$lib/stores/healthStore';
-	import HealthBar from './HealthBar.svelte';
+	import HealthBar from './ui/HealthBar.svelte';
 	import { damageFactor, speedFactor } from '$lib/stores/gameSettingsStore';
 
 	let perfMonitorEnabled = false;
