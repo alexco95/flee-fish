@@ -6,6 +6,7 @@
 	import { Predator } from '$lib/models/Predator';
 	import SharkModel from '../models/SharkModel.svelte';
 	import PufferModel from '../models/PufferModel.svelte';
+	import { movePufferfish } from '$lib/models/Movements';
 
 	let puffer: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -18,7 +19,11 @@
 	const DAMAGE = 20;
 
 	$: if (puffer && rigidBody) {
-		predator = new Predator(puffer, rigidBody, SPEED, DAMAGE, attack, swim);
+		predator = new Predator(puffer, rigidBody, {
+			speed: SPEED,
+			damage: DAMAGE,
+			movement: movePufferfish
+		});
 	}
 
 	useTask((delta) => {

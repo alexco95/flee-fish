@@ -4,8 +4,8 @@
 	import { Group } from 'three';
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { Predator } from '$lib/models/Predator';
-	import SharkModel from '../models/SharkModel.svelte';
 	import SwordfishModel from '../models/SwordfishModel.svelte';
+	import { moveSwordfish, moveZigzag } from '$lib/models/Movements';
 
 	let swordfish: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -18,7 +18,13 @@
 	const DAMAGE = 60;
 
 	$: if (swordfish && rigidBody) {
-		predator = new Predator(swordfish, rigidBody, SPEED, DAMAGE, attack, swim);
+		predator = new Predator(swordfish, rigidBody, {
+			speed: SPEED,
+			damage: DAMAGE,
+			movement: moveSwordfish,
+			swim,
+			attack
+		});
 	}
 
 	useTask((delta) => {

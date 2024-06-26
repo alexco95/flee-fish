@@ -17,7 +17,12 @@
 	const DAMAGE = 70;
 
 	$: if (shark && rigidBody) {
-		predator = new Predator(shark, rigidBody, SPEED, DAMAGE, attack, swim);
+		predator = new Predator(shark, rigidBody, {
+			speed: SPEED,
+			damage: DAMAGE,
+			swim,
+			attack
+		});
 	}
 
 	useTask((delta) => {

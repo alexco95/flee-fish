@@ -5,6 +5,7 @@
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { Predator } from '$lib/models/Predator';
 	import LionfishModel from '../models/LionfishModel.svelte';
+	import { moveErratic } from '$lib/models/Movements';
 
 	let lionFish: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -17,7 +18,11 @@
 	const DAMAGE = 20;
 
 	$: if (lionFish && rigidBody) {
-		predator = new Predator(lionFish, rigidBody, SPEED, DAMAGE, attack, swim);
+		predator = new Predator(lionFish, rigidBody, {
+			speed: SPEED,
+			damage: DAMAGE,
+			movement: moveErratic
+		});
 	}
 
 	useTask((delta) => {

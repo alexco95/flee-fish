@@ -14,7 +14,11 @@
 	const DAMAGE = 30;
 
 	$: if (stingray && rigidBody) {
-		predator = new Predator(stingray, rigidBody, SPEED, DAMAGE);
+		predator = new Predator(stingray, rigidBody, {
+			speed: SPEED,
+			damage: DAMAGE,
+			followPlayer: false
+		});
 	}
 
 	useTask((delta) => {
