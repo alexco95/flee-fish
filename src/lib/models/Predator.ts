@@ -6,7 +6,7 @@ import { get } from "svelte/store";
 import { Group, Matrix4, Quaternion, Vector3 } from "three";
 import { Utils } from "./Utils";
 import { damageFactor, speedFactor } from "$lib/stores/gameSettingsStore";
-import { moveStraight } from "./Movements";
+import { moveStraight, type MovementFunction } from "./Movements";
 import type { PredatorConfig } from "./PredatorConfig";
 
 export class Predator {
@@ -19,23 +19,32 @@ export class Predator {
 	private isAttacking = false;
 
 	private speed: number;
-    private damage: number;
-    private followPlayer: boolean;
-    private attack?: () => void;
-    private swim?: () => void;
-	private movement: (predatorPosition: Vector3, direction: Vector3, delta: number, speed: number, zigzagFrequency?: number) => void;
+	private damage: number;
+	private followPlayer: boolean;
+	private attack?: () => void;
+	private swim?: () => void;
+	private movement: MovementFunction;
 
 	constructor(
 		private mesh: Group,
 		private rigidBody: RAPIER.RigidBody,
-		config: PredatorConfig = {}
+		{
+			speed = 5,
+			damage = 5,
+			followPlayer = true,
+			attack,
+			swim,
+			movement = moveStraight
+		}: PredatorConfig = {}
 	) {
-		this.speed = config.speed ?? 5;
-        this.damage = config.damage ?? 5;
-        this.followPlayer = config.followPlayer ?? true;
-        this.attack = config.attack;
-        this.swim = config.swim;
-        this.movement = config.movement ?? moveStraight
+
+		this.speed = speed;
+		this.damage = damage;
+		this.followPlayer = followPlayer;
+		this.attack = attack;
+		this.swim = swim;
+		this.movement = movement;
+
 		this.initializePosition();
 		this.setInitialOrientation();
 
@@ -56,7 +65,7 @@ export class Predator {
 		}
 
 		this.mesh.quaternion.rotateTowards(this.targetQuaternion, currentSpeed * delta);
-        this.movement(predatorPosition, this.direction, delta, currentSpeed); // Usar la estrategia de movimiento
+		this.movement(predatorPosition, this.direction, delta, currentSpeed); // Usar la estrategia de movimiento
 		this.updateRigidBody(predatorPosition);
 
 		this.handleAttack(predatorPosition);
