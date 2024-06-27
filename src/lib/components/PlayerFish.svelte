@@ -115,7 +115,7 @@
 
 <T.Group bind:ref={player}>
 	<RigidBody bind:rigidBody gravityScale={0} enabledRotations={[false, false, false]}>
-		<Collider shape={'cuboid'} args={[0.2, 0.2, 0.2]} />
+		<Collider shape={'ball'} args={[0.26]} />
 		<MandarinFish bind:die />
 	</RigidBody>
 </T.Group>

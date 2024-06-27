@@ -5,7 +5,7 @@
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { Predator } from '$lib/models/Predator';
 	import SwordfishModel from '../models/SwordfishModel.svelte';
-	import { moveSwordfish, moveZigzag } from '$lib/models/Movements';
+	import { moveSwordfish } from '$lib/models/Movements';
 
 	let swordfish: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -38,8 +38,7 @@
 
 <T.Group bind:ref={swordfish}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
-		<!-- TODO: update args accordingly -->
-		<Collider shape={'cuboid'} args={[0.6, 0.75, 2.25]} />
+		<Collider shape={'roundCuboid'} args={[0.14, 0.3, 2.22, 0.3]} />
 		<SwordfishModel bind:swim bind:attack />
 	</RigidBody>
 </T.Group>

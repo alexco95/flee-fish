@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { T, useTask } from '@threlte/core';
 	import { Float } from '@threlte/extras';
-	import { AutoColliders, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
+	import { AutoColliders, Collider, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
 	import { Group } from 'three';
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { fade } from '$lib/transitions';
 	import { Predator } from '$lib/models/Predator';
 	import { moveJellyfish } from '$lib/models/Movements';
+	import JellyfishModel from '../models/JellyfishModel.svelte';
 
 	let jellyFish: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -37,15 +38,7 @@
 
 <T.Group bind:ref={jellyFish}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
-		<AutoColliders>
-			<!-- <Float speed={10}> -->
-			<T.Mesh>
-				<T.CylinderGeometry
-					args={[jellyfishDiameter * 0.5, jellyfishDiameter * 0.5, jellyfishHeight, 32]}
-				/>
-				<T.MeshStandardMaterial color="pink" transparent={true} opacity={0.6} transition={fade} />
-			</T.Mesh>
-			<!-- </Float> -->
-		</AutoColliders>
+		<Collider shape={'capsule'} args={[0.4, 0.4]} />
+		<JellyfishModel />
 	</RigidBody>
 </T.Group>

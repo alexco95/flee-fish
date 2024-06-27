@@ -36,8 +36,7 @@
 
 <T.Group bind:ref={lionFish}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
-		<!-- TODO: update args accordingly -->
-		<Collider shape={'cuboid'} args={[0.5, 0.5, 0.5]} />
+		<Collider shape={'ball'} args={[0.45]} />
 		<LionfishModel bind:swim bind:attack />
 	</RigidBody>
 </T.Group>

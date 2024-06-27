@@ -37,8 +37,7 @@
 
 <T.Group bind:ref={puffer}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
-		<!-- TODO: update args accordingly -->
-		<Collider shape={'cuboid'} args={[0.5, 0.5, 0.5]} />
+		<Collider shape={'ball'} args={[0.4]} />
 		<PufferModel bind:swim bind:attack />
 	</RigidBody>
 </T.Group>
