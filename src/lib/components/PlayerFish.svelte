@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { playerPosition } from '$lib/stores/store';
 	import { T, useTask } from '@threlte/core';
-	import { Float } from '@threlte/extras';
-	import { Vector3, type Mesh } from 'three';
+	import { Audio, AudioListener } from '@threlte/extras';
 	import ThirdPersonControls from './ThirdPersonControls.svelte';
 	import { onMount } from 'svelte';
-	import { AutoColliders, Collider, RigidBody } from '@threlte/rapier';
+	import { Collider, RigidBody } from '@threlte/rapier';
 	import { health } from '$lib/stores/healthStore';
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import MandarinFish from './models/MandarinFish.svelte';
@@ -110,6 +109,7 @@
 </script>
 
 <T.PerspectiveCamera makeDefault fov={75} far={50}>
+	<AudioListener />
 	<ThirdPersonControls bind:object={playerRef} />
 </T.PerspectiveCamera>
 
@@ -119,3 +119,5 @@
 		<MandarinFish bind:die />
 	</RigidBody>
 </T.Group>
+
+<Audio src={'audio/underwater_ambience.mp3'} autoplay />

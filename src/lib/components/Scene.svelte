@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import PlayerFish from './PlayerFish.svelte';
-	import { Gizmo, Grid, transitions } from '@threlte/extras';
+	import { transitions } from '@threlte/extras';
 	import { onMount, onDestroy } from 'svelte';
 	import { Game, type GameObject } from '$lib/models/Game';
-	import Ground from './environment/Ground.svelte';
+	import Bubbles from './particles/Bubbles.svelte';
 
 	let predators: GameObject[] = [];
 	let consumables: GameObject[] = [];
@@ -51,6 +51,8 @@
 
 <PlayerFish />
 
+<Bubbles />
+
 <!-- <T.PerspectiveCamera position={[0, -3, -3]} makeDefault fov={50}>
 	<OrbitControls enableDamping />
 </T.PerspectiveCamera> -->
@@ -66,13 +68,11 @@
 <T.DirectionalLight intensity={0.8} position={[5, 10, 0]} />
 <T.AmbientLight intensity={0.2} />
 
-<Grid
+<!-- <Grid
 	position={[0, -0.001, 0]}
 	cellColor="#ffffff"
 	sectionColor="#ffffff"
 	sectionThickness={0}
 	fadeDistance={25}
 	cellSize={2}
-/>
-
-<Gizmo />
+/> -->

@@ -1,16 +1,25 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core';
 	import Scene from './Scene.svelte';
-	import { PerfMonitor } from '@threlte/extras';
+	import { Audio, PerfMonitor, useAudioListener } from '@threlte/extras';
 	import { Debug, World } from '@threlte/rapier';
 	import Timer from './ui/Timer.svelte';
 	import { Pane, Checkbox, Button, Slider } from 'svelte-tweakpane-ui';
 	import { godMode, increaseHealth, reduceHealth } from '$lib/stores/healthStore';
 	import HealthBar from './ui/HealthBar.svelte';
 	import { damageFactor, speedFactor } from '$lib/stores/gameSettingsStore';
+	import GameMenu from './ui/GameMenu.svelte';
+	import { gamePaused } from '$lib/stores/store';
 
 	let perfMonitorEnabled = false;
 	let debugEnabled = false;
+
+	let showStartScreen = true;
+
+	function startGame() {
+		showStartScreen = false;
+		gamePaused.update(() => false);
+	}
 </script>
 
 <Pane>
@@ -37,3 +46,7 @@
 		<Scene />
 	</World>
 </Canvas>
+
+{#if showStartScreen}
+	<GameMenu onStart={startGame}></GameMenu>
+{/if}
