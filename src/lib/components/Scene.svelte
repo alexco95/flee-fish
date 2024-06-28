@@ -4,7 +4,6 @@
 	import { transitions } from '@threlte/extras';
 	import { onMount, onDestroy } from 'svelte';
 	import { Game, type GameObject } from '$lib/models/Game';
-	import Bubbles from './particles/Bubbles.svelte';
 
 	let predators: GameObject[] = [];
 	let consumables: GameObject[] = [];
@@ -50,8 +49,6 @@
 <!-- <Ground /> -->
 
 <PlayerFish />
-
-<Bubbles />
 
 <!-- <T.PerspectiveCamera position={[0, -3, -3]} makeDefault fov={50}>
 	<OrbitControls enableDamping />
