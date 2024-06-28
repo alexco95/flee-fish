@@ -3,7 +3,7 @@
 </script>
 
 <div class="menu">
-	<h1 class="title">Welcome to <span class="highlight-title">FLEE FISH!</span></h1>
+	<h1 class="title">Welcome to <span class="highlight-title">FLEE FISH</span>!</h1>
 	<div class="instructions">
 		<h2>Instructions</h2>
 		<p>

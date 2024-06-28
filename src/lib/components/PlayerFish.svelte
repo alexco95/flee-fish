@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { playerPosition } from '$lib/stores/store';
+	import { gamePaused, playerPosition } from '$lib/stores/store';
 	import { T, useTask } from '@threlte/core';
-	import { Audio, AudioListener } from '@threlte/extras';
+	import { Audio, AudioListener, useAudioListener } from '@threlte/extras';
 	import ThirdPersonControls from './ThirdPersonControls.svelte';
 	import { onMount } from 'svelte';
 	import { Collider, RigidBody } from '@threlte/rapier';
@@ -44,6 +44,11 @@
 	$: if (player) {
 		playerPosition.set(player.position);
 		playerRef = player;
+	}
+
+	$: if (!$gamePaused) {
+		const { context } = useAudioListener();
+		context.resume();
 	}
 
 	onMount(() => {
@@ -120,4 +125,4 @@
 	</RigidBody>
 </T.Group>
 
-<Audio src={'audio/underwater_ambience.mp3'} autoplay />
+<Audio src={'audio/underwater_ambience.mp3'} autoplay loop volume={0.5} />
