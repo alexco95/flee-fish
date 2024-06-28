@@ -28,7 +28,17 @@
 
 	const speed = 10;
 
-	const keysPressed = {
+	type Keys =
+		| 'ArrowUp'
+		| 'ArrowDown'
+		| 'ArrowLeft'
+		| 'ArrowRight'
+		| 'KeyW'
+		| 'KeyA'
+		| 'KeyS'
+		| 'KeyD';
+
+	const keysPressed: Record<Keys, boolean> = {
 		ArrowUp: false,
 		ArrowDown: false,
 		ArrowLeft: false,
@@ -84,21 +94,22 @@
 		}
 
 		if (isDead) {
-			// Actualizar playerPosition con la posición del rigidBody en cada frame
 			const currentPosition = rigidBody.translation();
-			playerRef.position.copy(currentPosition);
+			playerRef.position.set(currentPosition.x, currentPosition.y, currentPosition.z);
 		}
 	});
 
 	function handleKeyDown(event: KeyboardEvent): void {
-		if (keysPressed.hasOwnProperty(event.code)) {
-			keysPressed[event.code] = true;
+		const key = event.code as Keys;
+		if (key in keysPressed) {
+			keysPressed[key] = true;
 		}
 	}
 
 	function handleKeyUp(event: KeyboardEvent): void {
-		if (keysPressed.hasOwnProperty(event.code)) {
-			keysPressed[event.code] = false;
+		const key = event.code as Keys;
+		if (key in keysPressed) {
+			keysPressed[key] = false;
 		}
 	}
 
