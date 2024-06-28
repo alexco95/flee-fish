@@ -79,7 +79,7 @@ export class Game {
     }
 
     handleVisibilityChange(): void {
-        gamePaused.set(document.hidden);
+        gamePaused.update(() => document.hidden);
 
         if (document.hidden) {
             this.clearIntervals();
