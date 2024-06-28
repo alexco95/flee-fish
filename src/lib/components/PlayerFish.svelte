@@ -136,4 +136,4 @@
 	</RigidBody>
 </T.Group>
 
-<Audio src={'audio/underwater_ambience.mp3'} autoplay loop volume={0.5} />
+<Audio src={'audio/underwater_ambience.mp3'} autoplay loop volume={0.3} />

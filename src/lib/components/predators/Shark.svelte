@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { T, useTask } from '@threlte/core';
 	import { Collider, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
-	import { Group } from 'three';
+	import { Group, PositionalAudio as ThreePositionalAudio } from 'three';
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { Predator } from '$lib/models/Predator';
 	import SharkModel from '../models/SharkModel.svelte';
+	import { PositionalAudio } from '@threlte/extras';
 
 	let shark: Group;
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
+	let audio: ThreePositionalAudio;
 
 	let swim: () => void;
 	let attack: () => void;
@@ -21,7 +23,7 @@
 			speed: SPEED,
 			damage: DAMAGE,
 			swim,
-			attack
+			attack: handleAttack
 		});
 	}
 
@@ -32,6 +34,15 @@
 	function handleCollision(event: CollisionEnterEvent) {
 		predator.handleCollision(event);
 	}
+
+	function handleAttack(): void {
+		if (audio) {
+			audio.play();
+		}
+		if (attack) {
+			attack();
+		}
+	}
 </script>
 
 <T.Group bind:ref={shark}>
@@ -39,4 +50,5 @@
 		<Collider shape={'roundCuboid'} args={[0.13, 0.3, 1.2, 0.3]} />
 		<SharkModel bind:swim bind:attack />
 	</RigidBody>
+	<PositionalAudio src={'audio/shark.mp3'} bind:ref={audio} loop />
 </T.Group>

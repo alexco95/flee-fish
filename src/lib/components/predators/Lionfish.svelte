@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { T, useTask } from '@threlte/core';
-	import { AutoColliders, Collider, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
-	import { Group } from 'three';
+	import { Collider, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
+	import { Group, PositionalAudio as ThreePositionalAudio } from 'three';
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { Predator } from '$lib/models/Predator';
 	import LionfishModel from '../models/LionfishModel.svelte';
 	import { moveErratic } from '$lib/models/Movements';
+	import { PositionalAudio } from '@threlte/extras';
 
 	let lionFish: Group;
 	let rigidBody: RAPIER.RigidBody;
 	let predator: Predator;
+	let audio: ThreePositionalAudio;
 
 	let swim: () => void;
 	let attack: () => void;
@@ -21,7 +23,9 @@
 		predator = new Predator(lionFish, rigidBody, {
 			speed: SPEED,
 			damage: DAMAGE,
-			movement: moveErratic
+			movement: moveErratic,
+			swim,
+			attack: handleAttack
 		});
 	}
 
@@ -32,6 +36,15 @@
 	function handleCollision(event: CollisionEnterEvent) {
 		predator.handleCollision(event);
 	}
+
+	function handleAttack(): void {
+		if (audio) {
+			audio.play();
+		}
+		if (attack) {
+			attack();
+		}
+	}
 </script>
 
 <T.Group bind:ref={lionFish}>
@@ -39,4 +52,5 @@
 		<Collider shape={'ball'} args={[0.45]} />
 		<LionfishModel bind:swim bind:attack />
 	</RigidBody>
+	<PositionalAudio src={'audio/lionfish.mp3'} bind:ref={audio} loop />
 </T.Group>
