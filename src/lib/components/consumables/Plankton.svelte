@@ -2,10 +2,11 @@
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { T, useTask } from '@threlte/core';
 	import { AutoColliders, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
-	import type { Group } from 'three';
+	import { Group } from 'three';
 	import { fade } from '$lib/transitions';
 	import { Consumable } from '$lib/models/Consumable';
 	import { createEventDispatcher } from 'svelte';
+	import { FakeGlowMaterial } from '@threlte/extras';
 
 	let plankton: Group;
 	let rigidBody: RAPIER.RigidBody;
@@ -49,8 +50,12 @@
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<AutoColliders>
 			<T.Mesh>
-				<T.SphereGeometry args={[0.02, 0.02, 0.02]} />
-				<T.MeshStandardMaterial color="yellow" in={fade} />
+				<T.MeshBasicMaterial color="green" in={fade} />
+				<T.IcosahedronGeometry args={[0.2, 2]} />
+			</T.Mesh>
+			<T.Mesh>
+				<FakeGlowMaterial glowColor="green" falloff={1} in={fade} />
+				<T.IcosahedronGeometry args={[0.4, 2]} />
 			</T.Mesh>
 		</AutoColliders>
 	</RigidBody>

@@ -4,11 +4,15 @@
 	import { transitions } from '@threlte/extras';
 	import { onMount, onDestroy } from 'svelte';
 	import { Game, type GameObject } from '$lib/models/Game';
+	import { Audio as ThreeAudio } from 'three';
+	import { Audio } from '@threlte/extras';
 
 	let predators: GameObject[] = [];
 	let consumables: GameObject[] = [];
 
 	let game: Game;
+
+	let powerupAudio: ThreeAudio;
 
 	$: if (game) {
 		game.predators.subscribe((value) => {
@@ -40,6 +44,7 @@
 
 	function handleConsumed(id: number): void {
 		game.removeConsumable(id);
+		powerupAudio.play();
 	}
 </script>
 
@@ -64,6 +69,8 @@
 
 <T.DirectionalLight intensity={0.8} position={[5, 10, 0]} />
 <T.AmbientLight intensity={0.2} />
+
+<Audio src={'audio/powerup.mp3'} bind:ref={powerupAudio} />
 
 <!-- <Grid
 	position={[0, -0.001, 0]}
