@@ -51,8 +51,6 @@
 <T.AmbientLight intensity={0.5} />
 <T.PointLight position={[10, 10, 10]} />
 
-<!-- <Ground /> -->
-
 <PlayerFish />
 
 <!-- <T.PerspectiveCamera position={[0, -3, -3]} makeDefault fov={50}>

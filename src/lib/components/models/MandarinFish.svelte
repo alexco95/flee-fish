@@ -6,14 +6,7 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 <script lang="ts">
 	import * as THREE from 'three';
 	import { Group } from 'three';
-	import {
-		T,
-		type Props,
-		type Events,
-		type Slots,
-		forwardEventHandlers,
-		useThrelte
-	} from '@threlte/core';
+	import { T, type Props, type Events, type Slots, forwardEventHandlers } from '@threlte/core';
 	import { useGltf, useGltfAnimations } from '@threlte/extras';
 	import { transitionTo } from '$lib/models/AnimationUtils';
 

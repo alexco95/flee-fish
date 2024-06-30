@@ -15,19 +15,9 @@
 
 	const SPEED = 1;
 	const FLOAT_SPEED = 2;
-	const FLOAT_RANGE = 0.5;
-	const HEALTH_BOOST = 10;
 
 	$: if (smallFish && rigidBody) {
-		consumable = new Consumable(
-			smallFish,
-			rigidBody,
-			handleConsumed,
-			SPEED,
-			FLOAT_SPEED,
-			FLOAT_RANGE,
-			HEALTH_BOOST
-		);
+		consumable = new Consumable(smallFish, rigidBody, handleConsumed, SPEED, FLOAT_SPEED);
 	}
 
 	useTask((delta) => {

@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { T, useTask } from '@threlte/core';
-	import { Float } from '@threlte/extras';
-	import { AutoColliders, Collider, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
+	import { Collider, RigidBody, type CollisionEnterEvent } from '@threlte/rapier';
 	import { Group } from 'three';
 	import RAPIER from '@dimforge/rapier3d-compat';
-	import { fade } from '$lib/transitions';
 	import { Predator } from '$lib/models/Predator';
 	import { moveJellyfish } from '$lib/models/Movements';
 	import JellyfishModel from '../models/JellyfishModel.svelte';
@@ -15,8 +13,6 @@
 
 	const SPEED = 1;
 	const DAMAGE = 20;
-	const jellyfishDiameter = 0.3;
-	const jellyfishHeight = 0.4;
 
 	$: if (jellyFish && rigidBody) {
 		predator = new Predator(jellyFish, rigidBody, {

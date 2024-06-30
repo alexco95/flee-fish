@@ -4,7 +4,6 @@
 	import { Group, PositionalAudio as ThreePositionalAudio } from 'three';
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { Predator } from '$lib/models/Predator';
-	import SharkModel from '../models/SharkModel.svelte';
 	import PufferModel from '../models/PufferModel.svelte';
 	import { movePufferfish } from '$lib/models/Movements';
 	import { PositionalAudio } from '@threlte/extras';
