@@ -8,6 +8,7 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	import { Group } from 'three';
 	import { T, type Props, type Events, type Slots, forwardEventHandlers } from '@threlte/core';
 	import { useGltf, useGltfAnimations } from '@threlte/extras';
+	import { transitionTo } from '$lib/models/AnimationUtils';
 
 	type $$Props = Props<THREE.Group>;
 	type $$Events = Events<THREE.Group>;
@@ -41,32 +42,24 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	const gltf = useGltf<GLTFResult>(`/models/Lionfish.glb?${Math.random()}`);
 	export const { actions, mixer } = useGltfAnimations<ActionName>(gltf, ref);
 
+	const component = forwardEventHandlers();
+
 	$: if ($gltf) {
 		$gltf.materials.Lionfish_Main.side = THREE.DoubleSide;
 		$gltf.materials.Lionfish_Fins.side = THREE.DoubleSide;
 		$gltf.materials.Lionfish_Light.side = THREE.DoubleSide;
 	}
 
-	$: if ($actions) {
-		swim();
-	}
+	let currentActionKey: ActionName = 'Fish_Armature|Swimming_Normal';
 
-	const component = forwardEventHandlers();
+	$: $actions[currentActionKey]?.play();
 
 	export function swim() {
-		$actions['Fish_Armature|Swimming_Normal']?.play();
-	}
-
-	export function swimFast() {
-		$actions['Fish_Armature|Swimming_Fast']?.play();
+		currentActionKey = transitionTo($actions, currentActionKey, 'Fish_Armature|Swimming_Normal');
 	}
 
 	export function attack() {
-		$actions['Fish_Armature|Attack']?.play();
-	}
-
-	export function stopAttack() {
-		$actions['Fish_Armature|Attack']?.stop();
+		currentActionKey = transitionTo($actions, currentActionKey, 'Fish_Armature|Attack');
 	}
 </script>
 

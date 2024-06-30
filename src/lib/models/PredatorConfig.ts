@@ -6,6 +6,5 @@ export interface PredatorConfig {
 	followPlayer?: boolean;
 	movement?: (predatorPosition: Vector3, direction: Vector3, delta: number, speed: number, zigzagFrequency?: number) => void;
 	attack?: () => void;
-	stopAttack?: () => void;
 	swim?: () => void;
 }

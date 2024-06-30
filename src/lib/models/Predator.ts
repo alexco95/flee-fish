@@ -15,7 +15,6 @@ export class Predator {
 	private targetQuaternion = new Quaternion();
 	private hasCollided = false;
 	private proximityThreshold = 4;
-	// private disengageThreshold = 4;
 	private isAttacking = false;
 	private hasFinishedAttacking = false;
 
@@ -23,7 +22,6 @@ export class Predator {
 	private damage: number;
 	private followPlayer: boolean;
 	private attack?: () => void;
-	private stopAttack?: () => void;
 	private swim?: () => void;
 	private movement: MovementFunction;
 
@@ -35,7 +33,6 @@ export class Predator {
 			damage = 5,
 			followPlayer = true,
 			attack,
-			stopAttack,
 			swim,
 			movement = moveStraight
 		}: PredatorConfig = {}
@@ -45,7 +42,6 @@ export class Predator {
 		this.damage = damage;
 		this.followPlayer = followPlayer;
 		this.attack = attack;
-		this.stopAttack = stopAttack;
 		this.swim = swim;
 		this.movement = movement;
 
@@ -91,10 +87,10 @@ export class Predator {
 		if (event.targetRigidBody?.handle === 0) {
 			reduceHealth(this.damage * get(damageFactor));
 
-			if (this.isAttacking && this.stopAttack) {
+			if (this.isAttacking && this.swim) {
 				this.isAttacking = false;
 				this.hasFinishedAttacking = true;
-				this.stopAttack();
+				this.swim();
 			}
 		}
 	}
@@ -147,9 +143,9 @@ export class Predator {
 		if (distanceToPlayer < this.proximityThreshold && !this.isAttacking && !this.hasFinishedAttacking && this.attack) {
 			this.attack();
 			this.isAttacking = true;
-		} else if (distanceToPlayer > this.proximityThreshold && this.isAttacking && !this.hasFinishedAttacking && this.stopAttack)  {
+		} else if (distanceToPlayer > this.proximityThreshold && this.isAttacking && !this.hasFinishedAttacking && this.swim)  {
 			this.isAttacking = false;
-			this.stopAttack();
+			this.swim();
 		}
 	}
 

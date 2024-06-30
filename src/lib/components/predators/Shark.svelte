@@ -14,7 +14,6 @@
 
 	let swim: () => void;
 	let attack: () => void;
-	let stopAttack: () => void;
 
 	const SPEED = 4.5;
 	const DAMAGE = 70;
@@ -24,8 +23,7 @@
 			speed: SPEED,
 			damage: DAMAGE,
 			swim,
-			attack: handleAttack,
-			stopAttack
+			attack: handleAttack
 		});
 	}
 
@@ -50,7 +48,7 @@
 <T.Group bind:ref={shark}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<Collider shape={'roundCuboid'} args={[0.13, 0.3, 1.2, 0.3]} />
-		<SharkModel bind:swim bind:attack bind:stopAttack />
+		<SharkModel bind:swim bind:attack />
 	</RigidBody>
 	<PositionalAudio src={'audio/shark.mp3'} bind:ref={audio} loop />
 </T.Group>
