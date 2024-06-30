@@ -45,12 +45,18 @@
 			attack();
 		}
 	}
+
+	function handleAttackLoop(): void {
+		if (audio) {
+			audio.play();
+		}
+	}
 </script>
 
 <T.Group bind:ref={lionFish}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<Collider shape={'ball'} args={[0.45]} />
-		<LionfishModel bind:swim bind:attack />
+		<LionfishModel bind:swim bind:attack on:attackAnimationLoop={handleAttackLoop} />
 	</RigidBody>
-	<PositionalAudio src={'audio/lionfish.mp3'} bind:ref={audio} loop />
+	<PositionalAudio src={'audio/lionfish.mp3'} bind:ref={audio} />
 </T.Group>

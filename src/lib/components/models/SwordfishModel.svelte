@@ -9,12 +9,14 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	import { T, type Props, type Events, type Slots, forwardEventHandlers } from '@threlte/core';
 	import { useGltf, useGltfAnimations } from '@threlte/extras';
 	import { transitionTo } from '$lib/models/AnimationUtils';
+	import { createEventDispatcher } from 'svelte';
 
 	type $$Props = Props<THREE.Group>;
 	type $$Events = Events<THREE.Group>;
 	type $$Slots = Slots<THREE.Group> & { fallback: {}; error: { error: any } };
 
 	export const ref = new Group();
+	const dispatch = createEventDispatcher();
 
 	type ActionName =
 		| 'Fish_Armature|Attack'
@@ -65,6 +67,15 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	export function attack() {
 		currentActionKey = transitionTo($actions, currentActionKey, 'Fish_Armature|Attack');
 	}
+
+	mixer.addEventListener(
+		'loop',
+		(event: { type: string; action: THREE.AnimationAction; target: THREE.AnimationMixer }) => {
+			if (event.action.getClip().name === 'Fish_Armature|Attack') {
+				dispatch('attackAnimationLoop');
+			}
+		}
+	);
 </script>
 
 <T is={ref} dispose={false} {...$$restProps} bind:this={$component}>

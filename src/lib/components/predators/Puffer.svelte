@@ -46,12 +46,18 @@
 			attack();
 		}
 	}
+
+	function handleAttackLoop(): void {
+		if (audio) {
+			audio.play();
+		}
+	}
 </script>
 
 <T.Group bind:ref={puffer}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<Collider shape={'ball'} args={[0.4]} />
-		<PufferModel bind:swim bind:attack />
+		<PufferModel bind:swim bind:attack on:attackAnimationLoop={handleAttackLoop} />
 	</RigidBody>
-	<PositionalAudio src={'audio/pufferfish.mp3'} bind:ref={audio} loop />
+	<PositionalAudio src={'audio/pufferfish.mp3'} bind:ref={audio} />
 </T.Group>

@@ -36,11 +36,14 @@
 	}
 
 	function handleAttack(): void {
-		if (audio) {
-			audio.play();
-		}
 		if (attack) {
 			attack();
+		}
+	}
+
+	function handleAttackLoop(): void {
+		if (audio) {
+			audio.play();
 		}
 	}
 </script>
@@ -48,7 +51,7 @@
 <T.Group bind:ref={shark}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<Collider shape={'roundCuboid'} args={[0.13, 0.3, 1.2, 0.3]} />
-		<SharkModel bind:swim bind:attack />
+		<SharkModel bind:swim bind:attack on:attackAnimationLoop={handleAttackLoop} />
 	</RigidBody>
-	<PositionalAudio src={'audio/shark.mp3'} bind:ref={audio} loop />
+	<PositionalAudio src={'audio/shark.mp3'} bind:ref={audio} />
 </T.Group>

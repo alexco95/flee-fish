@@ -116,11 +116,8 @@
 	function handleDeath(): void {
 		isDead = true;
 		rigidBody.setGravityScale(1, true);
-		die(); // TODO: check why animation does not complete
-
-		// Asegurar que el pez caiga directamente hacia abajo sin otras fuerzas
-		// rigidBody.setLinvel(new Vector3(0, 0, 0), true); // Reiniciar velocidad lineal
-		// rigidBody.setAngvel(new Vector3(0, 0, 0), true); // Reiniciar velocidad angular
+		die();
+		gamePaused.update(() => true);
 	}
 </script>
 
@@ -136,4 +133,4 @@
 	</RigidBody>
 </T.Group>
 
-<Audio src={'audio/underwater_ambience.mp3'} autoplay loop volume={0.3} />
+<Audio src={'audio/underwater_ambience.mp3'} autoplay loop volume={0.2} />

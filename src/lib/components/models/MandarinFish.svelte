@@ -6,9 +6,16 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 <script lang="ts">
 	import * as THREE from 'three';
 	import { Group } from 'three';
-	import { T, type Props, type Events, type Slots, forwardEventHandlers } from '@threlte/core';
+	import {
+		T,
+		type Props,
+		type Events,
+		type Slots,
+		forwardEventHandlers,
+		useThrelte
+	} from '@threlte/core';
 	import { useGltf, useGltfAnimations } from '@threlte/extras';
-	import { onMount } from 'svelte';
+	import { transitionTo } from '$lib/models/AnimationUtils';
 
 	type $$Props = Props<THREE.Group>;
 	type $$Events = Events<THREE.Group>;
@@ -42,32 +49,35 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	const gltf = useGltf<GLTFResult>('/models/MandarinFish.glb');
 	export const { actions, mixer } = useGltfAnimations<ActionName>(gltf, ref);
 
+	const component = forwardEventHandlers();
+
 	$: if ($gltf) {
 		$gltf.materials.MandarinFish_Main.side = THREE.DoubleSide;
 		$gltf.materials.MandarinFish_Dark.side = THREE.DoubleSide;
 		$gltf.materials.MandarinFish_Light.side = THREE.DoubleSide;
 	}
 
-	$: if ($actions) {
-		swim();
-	}
+	let currentActionKey: ActionName = 'Fish_Armature|Swimming_Normal';
 
-	const component = forwardEventHandlers();
+	$: $actions[currentActionKey]?.play();
+
+	$: if ($actions['Fish_Armature|Death']) {
+		$actions['Fish_Armature|Death'].loop = THREE.LoopOnce;
+		$actions['Fish_Armature|Death'].clampWhenFinished = true;
+	}
 
 	export function swim() {
-		$actions['Fish_Armature|Swimming_Normal']?.play();
-	}
-
-	export function swimFast() {
-		$actions['Fish_Armature|Swimming_Fast']?.play();
-	}
-
-	export function attack() {
-		$actions['Fish_Armature|Attack']?.play();
+		currentActionKey = transitionTo($actions, currentActionKey, 'Fish_Armature|Swimming_Normal');
 	}
 
 	export function die() {
-		$actions['Fish_Armature|Death']?.play();
+		currentActionKey = transitionTo($actions, currentActionKey, 'Fish_Armature|Death', 0.5, true);
+		const action = $actions['Fish_Armature|Death'];
+		if (action) {
+			action.getMixer().addEventListener('finished', () => {
+				ref.rotation.z = Math.PI;
+			});
+		}
 	}
 </script>
 
