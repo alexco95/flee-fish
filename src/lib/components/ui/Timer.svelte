@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { writable } from 'svelte/store';
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import { blur } from 'svelte/transition';
-	import { gamePaused } from '$lib/stores/store';
+	import { gamePaused, survivalTime } from '$lib/stores/store';
 
-	const survivalTime = writable(0);
 	let interval: number;
 
 	onMount(() => {

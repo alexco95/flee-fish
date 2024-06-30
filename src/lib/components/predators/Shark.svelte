@@ -53,5 +53,5 @@
 		<Collider shape={'roundCuboid'} args={[0.13, 0.3, 1.2, 0.3]} />
 		<SharkModel bind:swim bind:attack on:attackAnimationLoop={handleAttackLoop} />
 	</RigidBody>
-	<PositionalAudio src={'audio/shark.mp3'} bind:ref={audio} />
+	<PositionalAudio src={'audio/shark.mp3'} bind:ref={audio} volume={2} />
 </T.Group>

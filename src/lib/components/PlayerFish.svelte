@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { gamePaused, playerPosition } from '$lib/stores/store';
+	import { gameEnded, gamePaused, playerPosition } from '$lib/stores/store';
 	import { T, useTask } from '@threlte/core';
 	import { Audio, AudioListener, useAudioListener } from '@threlte/extras';
 	import ThirdPersonControls from './ThirdPersonControls.svelte';
@@ -118,6 +118,9 @@
 		rigidBody.setGravityScale(1, true);
 		die();
 		gamePaused.update(() => true);
+		setTimeout(() => {
+			gameEnded.update(() => true);
+		}, 2000);
 	}
 </script>
 

@@ -1,22 +1,27 @@
 <script lang="ts">
-	export let onStart: () => void;
+	import { survivalTime } from '$lib/stores/store';
+	import { get } from 'svelte/store';
+
+	let time = get(survivalTime);
+
+	const funnyMessages = [
+		'Better luck next time!',
+		'Fish out of water!',
+		'You swam like a champ!',
+		"Don't be koi, try again!",
+		"You're a reel winner!"
+	];
+
+	const message = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
 </script>
 
 <div class="menu">
-	<h1 class="title">Welcome to <span class="highlight-title">FLEE FISH</span></h1>
-	<div class="instructions">
-		<h2>Instructions</h2>
-		<p>
-			Use the <strong>arrow keys</strong> (or <strong>AWSD</strong>) to move the fish around the
-			screen.
-		</p>
-		<p>
-			Avoid the <span class="highlight-red">predators</span> and eat the consumables to increase
-			your
-			<span class="highlight-green">health</span>.
-		</p>
+	<h1 class="title">Game Over</h1>
+	<div class="details">
+		<p>You survived for <span class="highlight">{time} seconds</span></p>
+		<p>{message}</p>
 	</div>
-	<button on:click={onStart}>PLAY!</button>
+	<button on:click={() => location.reload()}>RESTART</button>
 </div>
 
 <style>
@@ -42,22 +47,13 @@
 		margin-bottom: 1em;
 	}
 
-	.highlight-title {
-		color: #ffd700;
-	}
-
-	.instructions {
+	.details {
 		margin: 20px;
-		font-size: 1.5em;
+		font-size: 2em;
 	}
 
-	.highlight-green {
-		color: #00ff00;
-		font-weight: bold;
-	}
-
-	.highlight-red {
-		color: #ff0000;
+	.highlight {
+		color: #ffd700;
 		font-weight: bold;
 	}
 

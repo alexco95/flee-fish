@@ -5,7 +5,7 @@
 	import RAPIER from '@dimforge/rapier3d-compat';
 	import { Predator } from '$lib/models/Predator';
 	import LionfishModel from '../models/LionfishModel.svelte';
-	import { moveErratic } from '$lib/models/Movements';
+	import { moveErratic, movePufferfish } from '$lib/models/Movements';
 	import { PositionalAudio } from '@threlte/extras';
 
 	let lionFish: Group;
@@ -23,7 +23,7 @@
 		predator = new Predator(lionFish, rigidBody, {
 			speed: SPEED,
 			damage: DAMAGE,
-			movement: moveErratic,
+			movement: movePufferfish,
 			swim,
 			attack: handleAttack
 		});
@@ -38,9 +38,6 @@
 	}
 
 	function handleAttack(): void {
-		if (audio) {
-			audio.play();
-		}
 		if (attack) {
 			attack();
 		}

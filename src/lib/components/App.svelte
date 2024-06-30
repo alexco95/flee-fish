@@ -8,9 +8,10 @@
 	import { godMode, increaseHealth, reduceHealth } from '$lib/stores/healthStore';
 	import HealthBar from './ui/HealthBar.svelte';
 	import { damageFactor, speedFactor } from '$lib/stores/gameSettingsStore';
-	import { gamePaused } from '$lib/stores/store';
+	import { gameEnded, gamePaused } from '$lib/stores/store';
 	import StartScreen from './ui/StartScreen.svelte';
 	import { onMount } from 'svelte';
+	import EndScreen from './ui/EndScreen.svelte';
 
 	let perfMonitorEnabled = false;
 	let debugEnabled = false;
@@ -67,4 +68,8 @@
 
 {#if showStartScreen}
 	<StartScreen onStart={startGame} />
+{/if}
+
+{#if $gameEnded}
+	<EndScreen />
 {/if}

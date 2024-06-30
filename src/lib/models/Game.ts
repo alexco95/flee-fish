@@ -3,7 +3,6 @@ import Jellyfish from '$lib/components/predators/Jellyfish.svelte';
 import Plankton from '$lib/components/consumables/Plankton.svelte';
 import { gamePaused } from '$lib/stores/store';
 import { writable, type Writable } from 'svelte/store';
-import SmallFish from '$lib/components/consumables/SmallFish.svelte';
 import Lionfish from '$lib/components/predators/Lionfish.svelte';
 import MantaRay from '$lib/components/predators/MantaRay.svelte';
 import Puffer from '$lib/components/predators/Puffer.svelte';
@@ -26,7 +25,10 @@ export class Game {
         Puffer,
         Swordfish
     ];
-    private consumableTypes = [Plankton, SmallFish];
+    private consumableTypes = [
+        Plankton, 
+        // more to come
+    ];
     private predatorsInterval: number | undefined = undefined;
     private consumablesInterval: number | undefined = undefined;
 
