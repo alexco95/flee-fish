@@ -10,28 +10,46 @@
 	import { damageFactor, speedFactor } from '$lib/stores/gameSettingsStore';
 	import { gamePaused } from '$lib/stores/store';
 	import StartScreen from './ui/StartScreen.svelte';
+	import { onMount } from 'svelte';
 
 	let perfMonitorEnabled = false;
 	let debugEnabled = false;
-
 	let showStartScreen = true;
+	let paneVisible = false;
 
 	function startGame() {
 		showStartScreen = false;
 		gamePaused.update(() => false);
 	}
+
+	function togglePaneVisibility(event: KeyboardEvent) {
+		if (event.key === 'p' || event.key === 'P') {
+			paneVisible = !paneVisible;
+		}
+	}
+
+	onMount(() => {
+		window.addEventListener('keydown', togglePaneVisibility);
+
+		return () => {
+			window.removeEventListener('keydown', togglePaneVisibility);
+		};
+	});
 </script>
 
-<Pane>
-	<Checkbox bind:value={perfMonitorEnabled} label="Perf. Monitor"></Checkbox>
-	<Checkbox bind:value={debugEnabled} label="Physics Debug"></Checkbox>
-	<Button on:click={() => reduceHealth(5)} label="- Health"></Button>
-	<Button on:click={() => increaseHealth(5)} label="+ Health"></Button>
-	<Checkbox bind:value={$godMode} label="God Mode"></Checkbox>
-	<Slider bind:value={$speedFactor} min={0.1} max={1} step={0.1} label="Predators Speed"></Slider>
-	<Slider bind:value={$damageFactor} min={0.1} max={1} step={0.1} label="Damage Factor"
-	></Slider></Pane
->
+{#if paneVisible}
+	<Pane title="Debug tools">
+		<Checkbox bind:value={perfMonitorEnabled} label="Perf. Monitor"></Checkbox>
+		<Checkbox bind:value={debugEnabled} label="Physics Debug"></Checkbox>
+		<Button on:click={() => reduceHealth(5)} label="- Health"></Button>
+		<Button on:click={() => increaseHealth(5)} label="+ Health"></Button>
+		<Checkbox bind:value={$godMode} label="God Mode"></Checkbox>
+		<Slider bind:value={$speedFactor} min={0.1} max={1} step={0.1} label="Predators Speed"></Slider>
+		<Slider bind:value={$damageFactor} min={0.1} max={1} step={0.1} label="Damage Factor"
+		></Slider></Pane
+	>
+{/if}
+
 <HealthBar />
 <Timer />
 
