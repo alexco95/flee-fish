@@ -15,13 +15,15 @@ export class Predator {
 	private targetQuaternion = new Quaternion();
 	private hasCollided = false;
 	private proximityThreshold = 4;
-	private disengageThreshold = 2;
+	// private disengageThreshold = 4;
 	private isAttacking = false;
+	private hasFinishedAttacking = false;
 
 	private speed: number;
 	private damage: number;
 	private followPlayer: boolean;
 	private attack?: () => void;
+	private stopAttack?: () => void;
 	private swim?: () => void;
 	private movement: MovementFunction;
 
@@ -33,6 +35,7 @@ export class Predator {
 			damage = 5,
 			followPlayer = true,
 			attack,
+			stopAttack,
 			swim,
 			movement = moveStraight
 		}: PredatorConfig = {}
@@ -42,6 +45,7 @@ export class Predator {
 		this.damage = damage;
 		this.followPlayer = followPlayer;
 		this.attack = attack;
+		this.stopAttack = stopAttack;
 		this.swim = swim;
 		this.movement = movement;
 
@@ -86,6 +90,12 @@ export class Predator {
 
 		if (event.targetRigidBody?.handle === 0) {
 			reduceHealth(this.damage * get(damageFactor));
+
+			if (this.isAttacking && this.stopAttack) {
+				this.isAttacking = false;
+				this.hasFinishedAttacking = true;
+				this.stopAttack();
+			}
 		}
 	}
 
@@ -134,13 +144,12 @@ export class Predator {
 		const currentPlayerPosition = get(playerPosition);
 		const distanceToPlayer = predatorPosition.distanceTo(currentPlayerPosition);
 
-		if (distanceToPlayer < this.proximityThreshold && !this.isAttacking && this.attack) {
+		if (distanceToPlayer < this.proximityThreshold && !this.isAttacking && !this.hasFinishedAttacking && this.attack) {
 			this.attack();
 			this.isAttacking = true;
-		} else if (distanceToPlayer > this.disengageThreshold && this.isAttacking && this.swim) {
-			// TODO check if the predator is still in the attack animation
-			this.swim();
+		} else if (distanceToPlayer > this.proximityThreshold && this.isAttacking && !this.hasFinishedAttacking && this.stopAttack)  {
 			this.isAttacking = false;
+			this.stopAttack();
 		}
 	}
 

@@ -15,6 +15,7 @@
 
 	let swim: () => void;
 	let attack: () => void;
+	let stopAttack: () => void;
 
 	const SPEED = 5;
 	const DAMAGE = 60;
@@ -25,7 +26,8 @@
 			damage: DAMAGE,
 			movement: moveSwordfish,
 			swim,
-			attack: handleAttack
+			attack: handleAttack,
+			stopAttack
 		});
 	}
 
@@ -50,7 +52,7 @@
 <T.Group bind:ref={swordfish}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<Collider shape={'roundCuboid'} args={[0.14, 0.3, 2.22, 0.3]} />
-		<SwordfishModel bind:swim bind:attack />
+		<SwordfishModel bind:swim bind:attack bind:stopAttack />
 	</RigidBody>
 	<PositionalAudio src={'audio/sword.mp3'} bind:ref={audio} loop volume={1} />
 </T.Group>

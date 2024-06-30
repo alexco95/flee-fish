@@ -16,6 +16,7 @@
 
 	let swim: () => void;
 	let attack: () => void;
+	let stopAttack: () => void;
 
 	const SPEED = 1.5;
 	const DAMAGE = 20;
@@ -25,7 +26,8 @@
 			speed: SPEED,
 			damage: DAMAGE,
 			movement: movePufferfish,
-			attack: handleAttack
+			attack: handleAttack,
+			stopAttack
 		});
 	}
 
@@ -50,7 +52,7 @@
 <T.Group bind:ref={puffer}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<Collider shape={'ball'} args={[0.4]} />
-		<PufferModel bind:swim bind:attack />
+		<PufferModel bind:swim bind:attack bind:stopAttack />
 	</RigidBody>
 	<PositionalAudio src={'audio/pufferfish.mp3'} bind:ref={audio} loop />
 </T.Group>

@@ -15,6 +15,7 @@
 
 	let swim: () => void;
 	let attack: () => void;
+	let stopAttack: () => void;
 
 	const SPEED = 2;
 	const DAMAGE = 20;
@@ -25,7 +26,8 @@
 			damage: DAMAGE,
 			movement: moveErratic,
 			swim,
-			attack: handleAttack
+			attack: handleAttack,
+			stopAttack
 		});
 	}
 
@@ -50,7 +52,7 @@
 <T.Group bind:ref={lionFish}>
 	<RigidBody bind:rigidBody gravityScale={0} on:collisionenter={handleCollision}>
 		<Collider shape={'ball'} args={[0.45]} />
-		<LionfishModel bind:swim bind:attack />
+		<LionfishModel bind:swim bind:attack bind:stopAttack />
 	</RigidBody>
 	<PositionalAudio src={'audio/lionfish.mp3'} bind:ref={audio} loop />
 </T.Group>

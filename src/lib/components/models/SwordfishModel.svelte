@@ -64,6 +64,10 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 	export function attack() {
 		$actions['Fish_Armature|Attack']?.play();
 	}
+
+	export function stopAttack() {
+		$actions['Fish_Armature|Attack']?.stop();
+	}
 </script>
 
 <T is={ref} dispose={false} {...$$restProps} bind:this={$component}>
