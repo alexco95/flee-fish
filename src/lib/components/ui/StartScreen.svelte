@@ -38,8 +38,10 @@
 				Avoid the <span class="highlight-red">predators</span> and eat the consumables to increase
 				your <span class="highlight-green">health</span>.
 			</p>
+			<br />
+			<p>Survive as long as you can!</p>
 		</div>
-		<button on:click={onStart}>PLAY!</button>
+		<button on:click={onStart}>PLAY</button>
 	</div>
 {/if}
 
