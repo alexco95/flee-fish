@@ -1,23 +1,47 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	export let onStart: () => void;
+	let isMobile = false;
+
+	function checkIfMobile() {
+		const userAgent = navigator.userAgent;
+		// Detect iOS, Android, Windows Phone
+		if (/android/i.test(userAgent) || /iPad|iPhone|iPod/.test(userAgent)) {
+			return true;
+		}
+		return window.innerWidth < 768;
+	}
+
+	onMount(() => {
+		isMobile = checkIfMobile();
+	});
 </script>
 
-<div class="menu">
-	<h1 class="title">Welcome to <span class="highlight-title">FLEE FISH</span></h1>
-	<div class="instructions">
-		<h2>Instructions</h2>
-		<p>
-			Use the <strong>arrow keys</strong> (or <strong>AWSD</strong>) to move the fish around the
-			screen.
-		</p>
-		<p>
-			Avoid the <span class="highlight-red">predators</span> and eat the consumables to increase
-			your
-			<span class="highlight-green">health</span>.
+{#if isMobile}
+	<div class="menu">
+		<h1 class="title">FLEE FISH</h1>
+		<p class="mobile-warning">
+			The game is not playable on mobile devices yet. Please use a desktop or laptop.
 		</p>
 	</div>
-	<button on:click={onStart}>PLAY!</button>
-</div>
+{:else}
+	<div class="menu">
+		<h1 class="title">Welcome to <span class="highlight-title">FLEE FISH</span></h1>
+		<div class="instructions">
+			<h2>Instructions</h2>
+			<p>
+				Use the <strong>arrow keys</strong> (or <strong>AWSD</strong>) to move the fish around the
+				screen.
+			</p>
+			<p>
+				Avoid the <span class="highlight-red">predators</span> and eat the consumables to increase
+				your <span class="highlight-green">health</span>.
+			</p>
+		</div>
+		<button on:click={onStart}>PLAY!</button>
+	</div>
+{/if}
 
 <style>
 	.menu {
@@ -49,6 +73,12 @@
 	.instructions {
 		margin: 20px;
 		font-size: 1.5em;
+	}
+
+	.mobile-warning {
+		font-size: 1.5em;
+		color: #ff0000;
+		margin: 20px;
 	}
 
 	.highlight-green {
