@@ -51,9 +51,9 @@
 		font-style: normal;
 		letter-spacing: 2px;
 		color: #ffffff;
-		font-weight: 700;
+		font-weight: 600;
 		font-family: 'Fredoka', sans-serif;
 		text-align: center;
-		-webkit-text-stroke: 2px black;
+		/* -webkit-text-stroke: 2px black; */
 	}
 </style>
