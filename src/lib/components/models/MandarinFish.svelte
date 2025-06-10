@@ -48,6 +48,11 @@ Command: npx @threlte/gltf@2.0.3 /Users/aco95/projects/under-the-sea-challenge/s
 		$gltf.materials.MandarinFish_Main.side = THREE.DoubleSide;
 		$gltf.materials.MandarinFish_Dark.side = THREE.DoubleSide;
 		$gltf.materials.MandarinFish_Light.side = THREE.DoubleSide;
+
+		const randomColor = new THREE.Color(Math.random(), Math.random(), Math.random());
+		$gltf.materials.MandarinFish_Main.color.copy(randomColor);
+		$gltf.materials.MandarinFish_Dark.color.copy(randomColor);
+		$gltf.materials.MandarinFish_Light.color.copy(randomColor);
 	}
 
 	let currentActionKey: ActionName = 'Fish_Armature|Swimming_Normal';
